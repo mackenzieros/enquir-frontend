@@ -35,6 +35,7 @@ let DATA = [
         id: '2',
         topic: 'Marine biology',
         notes: 'Marine biology is the study of marine organisms, their behaviors and interactions with the environment. Marine biologists study biological oceanography and the associated fields of chemical, physical, and geological oceanography to understand marine organisms.',
+        questions: ['What is marine biology?', 'What do marine biologists study?'],
     },
 ];
 
@@ -86,9 +87,10 @@ export default class Main extends Component {
     };
 
     deleteNote = async (item) => {
+        var notes = null;
         for (var i = 0; i < this.state.notes.length; ++i) {
             if (this.state.notes[i].id == item.id) {
-                this.state.notes = [
+                notes = [
                     ...this.state.notes.slice(0, i),
                     ...this.state.notes.slice(i+1)
                 ];
@@ -96,7 +98,12 @@ export default class Main extends Component {
             }
         }
 
-        await storage.addNotes(this.state.notes);
+        if (!notes) {
+            console.log('err trying to delete notecard');
+            return;
+        }
+
+        await storage.addNotes(notes);
         this.loadNotes();
     };
 
@@ -142,7 +149,7 @@ export default class Main extends Component {
                 />
                 <TouchableOpacity
                     style={styles.addButton}
-                    onPress={() => this.showModal()} >
+                    onPress={this.showModal} >
                         <Text style={styles.addButtonText}>+</Text>
                 </TouchableOpacity>
             </SafeAreaView>

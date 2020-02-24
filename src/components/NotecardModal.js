@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Modal, TouchableOpacity, Text, KeyboardAvoidingView, Button, View, StyleSheet, TextInput, ActivityIndicator } from 'react-native';
-import QuestionModal from './QuestionModal';
+import { Modal, TouchableOpacity, FlatList, Text, KeyboardAvoidingView, Button, View, StyleSheet, TextInput, ActivityIndicator } from 'react-native';
+import Question from './Question';
 import Storage from '../storage/Storage';
 
 const storage = new Storage();
@@ -12,7 +12,7 @@ export default class NotecardModal extends Component {
     state = {
         isLoading: false,
         noteItem: null,
-        showingQuestionModal: false,
+        showingQuestions: false,
         topicInput: '',
         notesInput: '',
         questions: [],
@@ -50,10 +50,10 @@ export default class NotecardModal extends Component {
         this.props.onClose && this.props.onClose();
     };
 
-    // Handles opening of question modal
-    showQuestionModal = () => {
+    // Handles display of questions
+    showQuestions = () => {
         this.setState({
-            showingQuestionModal: !this.state.showingQuestionModal
+            showingQuestions: !this.state.showingQuestions
         });
     };
 
@@ -66,8 +66,8 @@ export default class NotecardModal extends Component {
         // get existing notes
         const existingNotes = await storage.retrieveNotes();
 
-        // generate questions
-        await this.generateQuestions();
+        // // generate questions
+        // await this.generateQuestions();
 
         // default topic name
         const topic = this.state.topicInput.length > 0 ? this.state.topicInput : 'Untitled';
@@ -126,16 +126,52 @@ export default class NotecardModal extends Component {
     // Generate questions given content
     generateQuestions = async () => {
         try {
+            // TODO: show progress modal
             const res = await axios.post(QUESTION_GENERATOR_API_URL, {
                 blurb: this.state.notesInput,
             });
 
             this.setState({
-                questions: res.data.questions,
+                questions: this.state.questions.concat(res.data.questions),    // add to existing questions
             });
         } catch (err) {
             console.log('Err occurred communicating with question generator: ', err);
         }
+    };
+
+    // For displaying icon of tab
+    tab = () => {
+        if (this.state.showingQuestions) {
+            return 'N';
+        }
+        return '?';
+    };
+    addQuestion = () => {
+        this.setState({
+            questions: this.state.questions.concat(['']),
+        });
+    };
+
+    deleteQuestion = (item) => {
+        var questions = null;
+        for (var i = 0; i < this.state.questions.length; ++i) {
+            if (i == item.index) {
+                questions = [
+                    ...this.state.questions.slice(0, i),
+                    ...this.state.questions.slice(i + 1)
+                ];
+                break;
+            }
+        }
+
+        if (!questions) {
+            console.log('err deleting question');
+            return;
+        }
+
+        this.setState({
+            questions: questions,
+        });
     };
 
     render() {
@@ -143,17 +179,12 @@ export default class NotecardModal extends Component {
             return null;
         }
 
-        const { isLoading, showingQuestionModal, notesInput, questions } = this.state;
+        const { isLoading, showingQuestions, notesInput, questions } = this.state;
 
         return (
             <Modal
                 animationType='slide'
                 onRequestClose={this.onClose} >
-                <QuestionModal
-                    show={showingQuestionModal}
-                    onClose={this.showQuestionModal}
-                    questions={questions}
-                />
                 {
                     isLoading &&
                     <ActivityIndicator size='large' color='#0064e1' />
@@ -163,20 +194,13 @@ export default class NotecardModal extends Component {
                     !isLoading &&
                     <View style={{ flex: 1 }}>
                         <View style={styles.menu}>
-                            <View style={styles.closeContainer}>
-                                <TouchableOpacity
-                                    style={styles.closeButton}
-                                    onPress={this.onClose} >
+                            <TouchableOpacity
+                                style={styles.closeButton}
+                                onPress={this.onClose} >
+                                <View style={styles.closeContainer}>
                                     <Text style={styles.closeButtonText}>{'<'}</Text>
-                                </TouchableOpacity>
-                            </View>
-                            <View style={styles.questionContainer}>
-                                <TouchableOpacity
-                                    syle={styles.questionButton}
-                                    onPress={this.showQuestionModal} >
-                                    <Text style={styles.questionButtonText}>?</Text>
-                                </TouchableOpacity>
-                            </View>
+                                </View>
+                            </TouchableOpacity>
                             <View style={styles.saveContainer}>
                                 <Button
                                     syle={styles.saveButton}
@@ -198,22 +222,69 @@ export default class NotecardModal extends Component {
                                         placeholder={'Enter topic'}
                                     />
                                 </View>
-                                <View style={styles.autoPopContainer}>
+                                <View style={styles.tabContainer}>
                                     <Button
                                         style={styles.autoPopButton}
                                         onPress={this.autoPop}
                                         title='auto'
                                     />
+                                    <TouchableOpacity
+                                        onPress={this.showQuestions} >
+                                        <View style={styles.questionTab}>
+                                            <Text style={styles.questionButtonText}>{this.tab()}</Text>
+                                        </View>
+                                    </TouchableOpacity>
                                 </View>
                                 <View style={styles.notesContainer}>
-                                    <TextInput
-                                        style={styles.notesInput}
-                                        multiline={true}
-                                        onChangeText={(notesInput) => this.setState({ notesInput })}
-                                        value={notesInput}
-                                        placeholder={'Enter notes'}
-                                        textAlignVertical={'top'}
-                                    />
+                                    {
+                                        showingQuestions &&
+                                        <View style={{ flex: 1 }}>
+                                            <View style={styles.questionsHeader}>
+                                                <Text style={styles.questionHeaderText}>Question Bank</Text>
+                                                <View style={styles.questionHeaderButtons}>
+                                                    <TouchableOpacity 
+                                                        onPress={this.generateQuestions} >
+                                                        <View style={styles.questionGenButton}>
+                                                            <Text>{'G'}</Text>
+                                                        </View>
+                                                    </TouchableOpacity>
+                                                    <TouchableOpacity>
+                                                        <View style={styles.notifButton}>
+                                                            <Text>{'N'}</Text>
+                                                        </View>
+                                                    </TouchableOpacity>
+                                                </View>
+                                            </View>
+                                            <FlatList
+                                                data={questions}
+                                                renderItem={(question) =>
+                                                    <Question
+                                                        question={question}
+                                                        delete={this.deleteQuestion}
+                                                    />
+                                                }
+                                                keyExtractor={(item, index) => index.toString()}
+                                                style={styles.questionsList}
+                                            />
+                                            <TouchableOpacity
+                                                style={styles.addQuestionButton}
+                                                onPress={this.addQuestion} >
+                                                    <Text style={styles.addButtonText}>+</Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                    }
+
+                                    {
+                                        !showingQuestions &&
+                                        <TextInput
+                                            style={styles.notesInput}
+                                            multiline={true}
+                                            onChangeText={(notesInput) => this.setState({ notesInput })}
+                                            value={notesInput}
+                                            placeholder={'Enter notes'}
+                                            textAlignVertical={'top'}
+                                        />
+                                    }
                                 </View>
                             </View>
                         </KeyboardAvoidingView>
@@ -234,36 +305,17 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'flex-start',
-    },
-    closeButton: {
         width: 65,
         height: 40,
         backgroundColor: 'white',
-        justifyContent: 'center',
+    },
+    closeButton: {
+        marginLeft: 20,
     },
     closeButtonText: {
         fontSize: 50,
         alignSelf: 'center',
         color: 'grey',
-    },
-    questionContainer: {
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'center',
-    },
-    questionButton: {
-        // overflow: 'hidden',
-        width: 60,
-        height: 60,
-        position: 'absolute',
-        // left: 80,
-        // bottom: 62,
-        // borderTopLeftRadius: 150,
-        // borderBottomLeftRadius: 150,
-        backgroundColor: 'black'
-    },
-    questionButtonText: {
-        fontSize: 24,
     },
     saveContainer: {
         flex: 1,
@@ -289,12 +341,26 @@ const styles = StyleSheet.create({
         // fontFamily: 'Roboto',
         fontSize: 19,
     },
-    autoPopContainer: {
+    tabContainer: {
         flexDirection: 'row',
-        justifyContent: 'flex-end',
+        justifyContent: 'space-between',
         marginRight: 20,
     },
     autoPopButton: {
+    },
+    questionTab: {
+        flexDirection: 'row',
+        alignSelf: 'flex-end',
+        justifyContent: 'center',
+        width: 40,
+        marginRight: 6,
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30,
+        elevation: 10,
+        backgroundColor: 'green',
+    },
+    questionButtonText: {
+        fontSize: 24,
     },
     notesContainer: {
         flex: 2,
@@ -302,7 +368,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#eaeaea",
         borderRadius: 4,
         marginHorizontal: 25,
-        marginTop: 10,
+        // marginTop: 10,
         marginBottom: 35,
         elevation: 10,
     },
@@ -311,5 +377,38 @@ const styles = StyleSheet.create({
         margin: 10,
         // fontFamily: 'Roboto',
         fontSize: 18,
-    }
+    },
+    questionsHeader: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        margin: 15,
+        elevation: 5,
+    },
+    questionHeaderText: {
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+    },
+    questionHeaderButtons: {
+        flexDirection: 'row',
+        justifyContent: 'flex-end'
+    },
+    questionGenButton: {
+    },
+    notifButton: {
+    },
+    questionsList: {
+        marginTop: 14,
+    },
+    addQuestionButton: {
+        width: 60,
+        height: 60,
+        borderRadius: 60/2,
+        backgroundColor: '#00BCD4',
+        position: 'absolute',
+        bottom: 40,
+        right: 30,
+        alignSelf: 'flex-end',
+        justifyContent: 'center',
+        elevation: 7,
+    },
 });
