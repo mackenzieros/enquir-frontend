@@ -5,7 +5,7 @@ import Question from './Question';
 import Storage from '../storage/Storage';
 
 const storage = new Storage();
-const WEB_SCRAPER_API_URL = 'EC2Co-EcsEl-3QPW7ZVE3WXS-1593988200.us-west-1.elb.amazonaws.com:5000/autopopcontent';
+const WEB_SCRAPER_API_URL = 'EC2Co-EcsEl-WJW99ZSC6W4S-1501695430.us-west-1.elb.amazonaws.com:5000/autopopcontent';
 const QUESTION_GENERATOR_API_URL = 'https://rocky-caverns-51964.herokuapp.com/genquest';
 
 export default class NotecardModal extends Component {
@@ -32,7 +32,7 @@ export default class NotecardModal extends Component {
     loadData = (item) => {
         // If no item is passed, reset state of modal to represent an empty notecard,
         // otherwise populate the notecard with info
-        if (item == undefined) {
+        if (item == null) {
             this.resetNotecard();
         } else {
             this.setState({
@@ -53,7 +53,7 @@ export default class NotecardModal extends Component {
     // Handles display of questions
     showQuestions = () => {
         this.setState({
-            showingQuestions: !this.state.showingQuestions
+            showingQuestions: !this.state.showingQuestions,
         });
     };
 
@@ -65,9 +65,6 @@ export default class NotecardModal extends Component {
 
         // get existing notes
         const existingNotes = await storage.retrieveNotes();
-
-        // // generate questions
-        // await this.generateQuestions();
 
         // default topic name
         const topic = this.state.topicInput.length > 0 ? this.state.topicInput : 'Untitled';
@@ -146,6 +143,7 @@ export default class NotecardModal extends Component {
         }
         return '?';
     };
+
     addQuestion = () => {
         this.setState({
             questions: this.state.questions.concat(['']),
@@ -209,85 +207,80 @@ export default class NotecardModal extends Component {
                                 />
                             </View>
                         </View>
-                        <KeyboardAvoidingView
-                            style={{ flex: 1 }}
-                            behavior="padding"
-                            enabled >
-                            <View style={styles.container}>
-                                <View style={styles.topicContainer}>
-                                    <TextInput
-                                        style={styles.topicInput}
-                                        onChangeText={(topicInput) => this.setState({ topicInput })}
-                                        value={this.state.topicInput}
-                                        placeholder={'Enter topic'}
-                                    />
-                                </View>
-                                <View style={styles.tabContainer}>
-                                    <Button
-                                        style={styles.autoPopButton}
-                                        onPress={this.autoPop}
-                                        title='auto'
-                                    />
-                                    <TouchableOpacity
-                                        onPress={this.showQuestions} >
-                                        <View style={styles.questionTab}>
-                                            <Text style={styles.questionButtonText}>{this.tab()}</Text>
-                                        </View>
-                                    </TouchableOpacity>
-                                </View>
-                                <View style={styles.notesContainer}>
-                                    {
-                                        showingQuestions &&
-                                        <View style={{ flex: 1 }}>
-                                            <View style={styles.questionsHeader}>
-                                                <Text style={styles.questionHeaderText}>Question Bank</Text>
-                                                <View style={styles.questionHeaderButtons}>
-                                                    <TouchableOpacity 
-                                                        onPress={this.generateQuestions} >
-                                                        <View style={styles.questionGenButton}>
-                                                            <Text>{'G'}</Text>
-                                                        </View>
-                                                    </TouchableOpacity>
-                                                    <TouchableOpacity>
-                                                        <View style={styles.notifButton}>
-                                                            <Text>{'N'}</Text>
-                                                        </View>
-                                                    </TouchableOpacity>
-                                                </View>
-                                            </View>
-                                            <FlatList
-                                                data={questions}
-                                                renderItem={(question) =>
-                                                    <Question
-                                                        question={question}
-                                                        delete={this.deleteQuestion}
-                                                    />
-                                                }
-                                                keyExtractor={(item, index) => index.toString()}
-                                                style={styles.questionsList}
-                                            />
-                                            <TouchableOpacity
-                                                style={styles.addQuestionButton}
-                                                onPress={this.addQuestion} >
-                                                    <Text style={styles.addButtonText}>+</Text>
-                                            </TouchableOpacity>
-                                        </View>
-                                    }
-
-                                    {
-                                        !showingQuestions &&
-                                        <TextInput
-                                            style={styles.notesInput}
-                                            multiline={true}
-                                            onChangeText={(notesInput) => this.setState({ notesInput })}
-                                            value={notesInput}
-                                            placeholder={'Enter notes'}
-                                            textAlignVertical={'top'}
-                                        />
-                                    }
-                                </View>
+                        <View style={styles.container}>
+                            <View style={styles.topicContainer}>
+                                <TextInput
+                                    style={styles.topicInput}
+                                    onChangeText={(topicInput) => this.setState({ topicInput })}
+                                    value={this.state.topicInput}
+                                    placeholder={'Enter topic'}
+                                />
                             </View>
-                        </KeyboardAvoidingView>
+                            <View style={styles.tabContainer}>
+                                <Button
+                                    style={styles.autoPopButton}
+                                    onPress={this.autoPop}
+                                    title='auto'
+                                />
+                                <TouchableOpacity
+                                    onPress={this.showQuestions} >
+                                    <View style={styles.questionTab}>
+                                        <Text style={styles.questionButtonText}>{this.tab()}</Text>
+                                    </View>
+                                </TouchableOpacity>
+                            </View>
+                            <View style={styles.notesContainer}>
+                                {
+                                    showingQuestions &&
+                                    <View style={{ flex: 1 }}>
+                                        <View style={styles.questionsHeader}>
+                                            <Text style={styles.questionHeaderText}>Question Bank</Text>
+                                            <View style={styles.questionHeaderButtons}>
+                                                <TouchableOpacity
+                                                    onPress={this.generateQuestions} >
+                                                    <View style={styles.questionGenButton}>
+                                                        <Text>{'G'}</Text>
+                                                    </View>
+                                                </TouchableOpacity>
+                                                <TouchableOpacity>
+                                                    <View style={styles.notifButton}>
+                                                        <Text>{'N'}</Text>
+                                                    </View>
+                                                </TouchableOpacity>
+                                            </View>
+                                        </View>
+                                        <FlatList
+                                            data={questions}
+                                            renderItem={(question) =>
+                                                <Question
+                                                    question={question}
+                                                    delete={this.deleteQuestion}
+                                                />
+                                            }
+                                            keyExtractor={(item, index) => index.toString()}
+                                            style={styles.questionsList}
+                                        />
+                                        <TouchableOpacity
+                                            style={styles.addQuestionButton}
+                                            onPress={this.addQuestion} >
+                                            <Text style={styles.addButtonText}>+</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                }
+
+                                {
+                                    !showingQuestions &&
+                                    <TextInput
+                                        style={styles.notesInput}
+                                        multiline={true}
+                                        onChangeText={(notesInput) => this.setState({ notesInput })}
+                                        value={notesInput}
+                                        placeholder={'Enter notes'}
+                                        textAlignVertical={'top'}
+                                    />
+                                }
+                            </View>
+                        </View>
                     </View>
                 }
             </Modal>
@@ -402,7 +395,7 @@ const styles = StyleSheet.create({
     addQuestionButton: {
         width: 60,
         height: 60,
-        borderRadius: 60/2,
+        borderRadius: 60 / 2,
         backgroundColor: '#00BCD4',
         position: 'absolute',
         bottom: 40,

@@ -52,7 +52,11 @@ const ellipseSubstr = (str) => {
 // For displaying created notes
 const Notecard = ({ parent, item }) => {
     return (
-        <TouchableNativeFeedback onPress={() => {parent.showModal(item)}}>
+        <TouchableNativeFeedback 
+            onPress={() => {
+                parent.loadModal(item)
+                parent.showModal();
+            }}>
             <View style={styles.notecard}>
                 <View style={styles.topicContainer}>
                     <Text style={styles.topicText}>{item.topic}</Text>
@@ -75,15 +79,16 @@ export default class Main extends Component {
         notes: [],
     };
 
-    // Set visibility of note-adding modal and if passed a note item,
-    // update the notecard modal's state with the item
-    showModal = (item) => {
-        var newState = {
+    // Set visibility of note-adding modal
+    showModal = () => {
+        this.setState({
             showingModal: !this.state.showingModal
-        };
+        });
+    };
 
+    // Update the notecard modal's state with the item
+    loadModal = (item) => {
         this.notecardRef.current.loadData(item);
-        this.setState(newState);
     };
 
     deleteNote = async (item) => {
@@ -149,7 +154,10 @@ export default class Main extends Component {
                 />
                 <TouchableOpacity
                     style={styles.addButton}
-                    onPress={this.showModal} >
+                    onPress={() => {
+                        this.loadModal(null)
+                        this.showModal();
+                    }}>
                         <Text style={styles.addButtonText}>+</Text>
                 </TouchableOpacity>
             </SafeAreaView>
