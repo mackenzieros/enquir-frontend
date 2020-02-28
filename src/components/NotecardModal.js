@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Modal, TouchableOpacity, FlatList, Text, KeyboardAvoidingView, Button, View, StyleSheet, TextInput, ActivityIndicator } from 'react-native';
+import { Modal, TouchableOpacity, FlatList, Text, Keyboard, Button, View, StyleSheet, TextInput, ActivityIndicator } from 'react-native';
 import Question from './Question';
 import Storage from '../storage/Storage';
 
@@ -13,6 +13,7 @@ export default class NotecardModal extends Component {
         isLoading: false,
         noteItem: null,
         showingQuestions: false,
+        showingAddQuestionButton: true,
         topicInput: '',
         notesInput: '',
         questions: [],
@@ -22,6 +23,8 @@ export default class NotecardModal extends Component {
         this.setState({
             isLoading: false,
             noteItem: null,
+            showingQuestions: false,
+            showingAddQuestionButton: true,
             topicInput: '',
             notesInput: '',
             questions: [],
@@ -172,12 +175,34 @@ export default class NotecardModal extends Component {
         });
     };
 
+    _keyboardDidShow = () => {
+        this.setState({
+            showingAddQuestionButton: false,
+        });
+    }
+
+    _keyboardDidHide = () => {
+        this.setState({
+            showingAddQuestionButton: true,
+        });
+    }
+
+    componentDidMount() {
+        this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
+        this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
+    };
+
+    componentWillUnmount() {
+        this.keyboardDidShowListener.remove();
+        this.keyboardDidHideListener.remove();
+    };
+
     render() {
         if (!this.props.show) {
             return null;
         }
 
-        const { isLoading, showingQuestions, notesInput, questions } = this.state;
+        const { isLoading, showingQuestions, showingAddQuestionButton, notesInput, questions } = this.state;
 
         return (
             <Modal
@@ -260,11 +285,14 @@ export default class NotecardModal extends Component {
                                             keyExtractor={(item, index) => index.toString()}
                                             style={styles.questionsList}
                                         />
-                                        <TouchableOpacity
-                                            style={styles.addQuestionButton}
-                                            onPress={this.addQuestion} >
-                                            <Text style={styles.addButtonText}>+</Text>
-                                        </TouchableOpacity>
+                                        {
+                                            showingAddQuestionButton &&
+                                            <TouchableOpacity
+                                                style={styles.addQuestionButton}
+                                                onPress={this.addQuestion} >
+                                                <Text style={styles.addButtonText}>+</Text>
+                                            </TouchableOpacity>
+                                        }
                                     </View>
                                 }
 
