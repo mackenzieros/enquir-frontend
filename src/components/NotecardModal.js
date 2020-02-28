@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Modal, TouchableOpacity, FlatList, Text, Keyboard, Button, View, StyleSheet, TextInput, ActivityIndicator } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import Question from './Question';
 import Storage from '../storage/Storage';
 
@@ -221,15 +222,15 @@ export default class NotecardModal extends Component {
                                 style={styles.closeButton}
                                 onPress={this.onClose} >
                                 <View style={styles.closeContainer}>
-                                    <Text style={styles.closeButtonText}>{'<'}</Text>
+                                    <Icon name='chevron-left' size={30} />
                                 </View>
                             </TouchableOpacity>
                             <View style={styles.saveContainer}>
-                                <Button
-                                    syle={styles.saveButton}
-                                    onPress={this.onSave}
-                                    title='Save'
-                                />
+                                <TouchableOpacity
+                                    style={styles.saveButton}
+                                    onPress={this.onSave} >
+                                    <Text style={styles.saveButtonText}>SAVE</Text>
+                                </TouchableOpacity>
                             </View>
                         </View>
                         <View style={styles.container}>
@@ -321,29 +322,27 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
+        marginBottom: 5,
     },
     closeContainer: {
-        flex: 1,
         flexDirection: 'row',
         justifyContent: 'flex-start',
         width: 65,
-        height: 40,
+        height: 30,
         backgroundColor: 'white',
     },
     closeButton: {
-        marginLeft: 20,
-    },
-    closeButtonText: {
-        fontSize: 50,
-        alignSelf: 'center',
-        color: 'grey',
+        marginLeft: 16,
+        marginVertical: 7,
     },
     saveContainer: {
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'flex-end',
     },
-    saveButton: {
+    saveButtonText: {
+        fontSize: 20,
+        fontFamily: 'Roboto-Regular',
     },
     container: {
         flex: 1,
@@ -352,7 +351,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         backgroundColor: "#eaeaea",
         marginHorizontal: 25,
-        marginTop: 20,
         marginBottom: 10,
     },
     topicInput: {

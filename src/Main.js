@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { SafeAreaView, FlatList, StyleSheet, View, Text, Button, Modal, Alert, TouchableOpacity, TouchableNativeFeedback } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import NotecardModal from './components/NotecardModal';
 import Storage from './storage/Storage';
 
@@ -160,6 +161,7 @@ export default class Main extends Component {
                     }}>
                         <Text style={styles.addButtonText}>+</Text>
                 </TouchableOpacity>
+                <Icon name="rocket" size={30} color="#900" />
             </SafeAreaView>
         );
     }
