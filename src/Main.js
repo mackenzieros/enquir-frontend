@@ -38,6 +38,42 @@ let DATA = [
         notes: 'Marine biology is the study of marine organisms, their behaviors and interactions with the environment. Marine biologists study biological oceanography and the associated fields of chemical, physical, and geological oceanography to understand marine organisms.',
         questions: ['What is marine biology?', 'What do marine biologists study?'],
     },
+    {
+        id: '3',
+        topic: 'First Item',
+        notes: 'first blurb blah blah blah',
+        questions: ['What is this?'],
+    },
+    {
+        id: '4',
+        topic: 'Second Item',
+        notes: 'second blurb blah blah blah',
+        questions: ['What is this?'],
+    },
+    {
+        id: '5',
+        topic: 'Marine biology',
+        notes: 'Marine biology is the study of marine organisms, their behaviors and interactions with the environment. Marine biologists study biological oceanography and the associated fields of chemical, physical, and geological oceanography to understand marine organisms.',
+        questions: ['What is marine biology?', 'What do marine biologists study?'],
+    },
+    {
+        id: '6',
+        topic: 'First Item',
+        notes: 'first blurb blah blah blah',
+        questions: ['What is this?'],
+    },
+    {
+        id: '7',
+        topic: 'Second Item',
+        notes: 'second blurb blah blah blah',
+        questions: ['What is this?'],
+    },
+    {
+        id: '8',
+        topic: 'Marine biology',
+        notes: 'Marine biology is the study of marine organisms, their behaviors and interactions with the environment. Marine biologists study biological oceanography and the associated fields of chemical, physical, and geological oceanography to understand marine organisms.',
+        questions: ['What is marine biology?', 'What do marine biologists study?'],
+    },
 ];
 
 // Used to paraphrase notes for display
@@ -62,7 +98,7 @@ const Notecard = ({ parent, item }) => {
                 <View style={styles.topicContainer}>
                     <Text style={styles.topicText}>{item.topic}</Text>
                     <TouchableOpacity onPress={() => {parent.deleteNote(item)}}>
-                        <Text style={styles.deleteNoteButton}>x</Text>
+                        <Icon name='trash' size={15} />
                     </TouchableOpacity>
                 </View>
                 <View tyle={styles.notesContainer}>
@@ -144,7 +180,9 @@ export default class Main extends Component {
                         data={notes}
                         renderItem={({ item }) => <Notecard parent={this} item={item} />}
                         keyExtractor={item => item.id}
-                        style={styles.flatlist} 
+                        style={styles.flatlist}
+                        ListFooterComponent={() => <View />}
+                        ListFooterComponentStyle={styles.emptyBlock}
                     />
                 </View>
                 <NotecardModal
@@ -153,15 +191,16 @@ export default class Main extends Component {
                     onClose={this.showModal}
                     onSave={this.saveNote}
                 />
-                <TouchableOpacity
-                    style={styles.addButton}
-                    onPress={() => {
-                        this.loadModal(null)
-                        this.showModal();
-                    }}>
-                        <Text style={styles.addButtonText}>+</Text>
-                </TouchableOpacity>
-                <Icon name="rocket" size={30} color="#900" />
+                {/* <View style={styles.addButtonContainer}> */}
+                    <TouchableOpacity
+                        style={styles.addButton}
+                        onPress={() => {
+                            this.loadModal(null)
+                            this.showModal();
+                        }}>
+                            <Icon name='plus' size={30} style={{ marginLeft: 17.5, }} />
+                    </TouchableOpacity>
+                {/* </View> */}
             </SafeAreaView>
         );
     }
@@ -178,25 +217,9 @@ const styles = StyleSheet.create({
         backgroundColor: 'blue',
     },
     content: {
+        flex: 1,
+        flexDirection: 'row',
         paddingHorizontal: 14,
-    },
-    addButton: {
-        width: 60,
-        height: 60,
-        borderRadius: 60/2,
-        backgroundColor: '#00BCD4',
-        position: 'absolute',
-        bottom: 40,
-        right: 30,
-        alignSelf: 'flex-end',
-        justifyContent: 'center',
-        elevation: 7,
-    },
-    addButtonText: {
-        alignSelf: 'center',
-        fontSize: 40,
-        color: 'white',
-        marginBottom: 5,
     },
     notecard: {
         flex: 0,
@@ -212,32 +235,44 @@ const styles = StyleSheet.create({
         borderRadius: 3,
         backgroundColor: colors.tertiary,
     },
+    emptyBlock: {
+        paddingVertical: 38,
+        paddingLeft: 18,
+        paddingRight: 16,
+        marginTop: 0,
+        marginBottom: 8,
+    },
     topicContainer: {
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
     topicText: {
-        // fontFamily: 'notoserif',
+        fontFamily: 'Roboto-Medium',
         fontSize: 17,
-        fontWeight: 'bold',
-    },
-    deleteNoteButton: {
-        bottom: 10,
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-        fontSize: 18,
     },
     notesContainer: {
         flex: 1, 
         flexDirection: 'row',
     },
     notesText: {
-        // fontFamily: 'Roboto',
+        fontFamily: 'Roboto-Regular',
         fontSize: 16,
     },
     flatlist: {
         marginTop: 14,
         alignSelf: 'stretch',
-    }
+    },
+    addButton: {
+        width: 60,
+        height: 60,
+        borderRadius: 60/2,
+        backgroundColor: '#00BCD4',
+        bottom: 20,
+        right: 30,
+        alignSelf: 'flex-end',
+        position: 'absolute',
+        justifyContent: 'center',
+        elevation: 7,
+    },
 });

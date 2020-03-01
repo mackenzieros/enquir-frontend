@@ -9,11 +9,20 @@ const storage = new Storage();
 const WEB_SCRAPER_API_URL = 'EC2Co-EcsEl-WJW99ZSC6W4S-1501695430.us-west-1.elb.amazonaws.com:5000/autopopcontent';
 const QUESTION_GENERATOR_API_URL = 'https://rocky-caverns-51964.herokuapp.com/genquest';
 
+// Dismiss keyboard when touching anywhere
 const DismissKeyboard = ({ children }) => (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         {children}
     </TouchableWithoutFeedback>
 );
+
+// For displaying tab icon
+const TabIcon = ({ showingQuestions }) => {
+    if (showingQuestions) {
+        return <Icon name="pencil" size={35} color='#fffdf9' style={{marginTop: 5}} />;
+    }
+    return <Icon name="question" size={35} color='#fffdf9' style={{marginTop: 5}} />;
+};
 
 export default class NotecardModal extends Component {
     state = {
@@ -146,14 +155,6 @@ export default class NotecardModal extends Component {
         }
     };
 
-    // For displaying icon of tab
-    tab = () => {
-        if (this.state.showingQuestions) {
-            return 'N';
-        }
-        return '?';
-    };
-
     addQuestion = () => {
         this.setState({
             questions: this.state.questions.concat(['']),
@@ -250,15 +251,16 @@ export default class NotecardModal extends Component {
                                     />
                                 </View>
                                 <View style={styles.tabContainer}>
-                                    <Button
-                                        style={styles.autoPopButton}
-                                        onPress={this.autoPop}
-                                        title='auto'
-                                    />
+                                    <TouchableOpacity 
+                                        onPress={this.autoPop} >
+                                        <View style={styles.autoPopButtonContainer}>
+                                            <Icon name='magic' size={30} color='#fffdf9' style={{marginTop: 5.5}} />
+                                        </View>
+                                    </TouchableOpacity>
                                     <TouchableOpacity
                                         onPress={this.showQuestions} >
                                         <View style={styles.questionTab}>
-                                            <Text style={styles.questionButtonText}>{this.tab()}</Text>
+                                            <TabIcon showingQuestions={showingQuestions}/>
                                         </View>
                                     </TouchableOpacity>
                                 </View>
@@ -267,17 +269,17 @@ export default class NotecardModal extends Component {
                                         showingQuestions &&
                                         <View style={{ flex: 1 }}>
                                             <View style={styles.questionsHeader}>
-                                                <Text style={styles.questionHeaderText}>Question Bank</Text>
+                                                <Text style={styles.questionHeaderText}>Questions</Text>
                                                 <View style={styles.questionHeaderButtons}>
                                                     <TouchableOpacity
                                                         onPress={this.generateQuestions} >
                                                         <View style={styles.questionGenButton}>
-                                                            <Text>{'G'}</Text>
+                                                            <Icon name='question-circle' size={25} />
                                                         </View>
                                                     </TouchableOpacity>
                                                     <TouchableOpacity>
                                                         <View style={styles.notifButton}>
-                                                            <Text>{'N'}</Text>
+                                                            <Icon name='bell' size={20} />
                                                         </View>
                                                     </TouchableOpacity>
                                                 </View>
@@ -292,13 +294,15 @@ export default class NotecardModal extends Component {
                                                 }
                                                 keyExtractor={(item, index) => index.toString()}
                                                 style={styles.questionsList}
+                                                ListFooterComponent={() => <View />}
+                                                ListFooterComponentStyle={styles.emptyBlock}
                                             />
                                             {
                                                 showingAddQuestionButton &&
                                                 <TouchableOpacity
                                                     style={styles.addQuestionButton}
                                                     onPress={this.addQuestion} >
-                                                    <Text style={styles.addButtonText}>+</Text>
+                                                    <Icon name='plus' size={30} style={{ marginLeft: 16, }} />
                                                 </TouchableOpacity>
                                             }
                                         </View>
@@ -337,6 +341,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         width: 65,
         height: 30,
+        marginTop: 5,
         backgroundColor: 'white',
     },
     closeButton: {
@@ -366,25 +371,36 @@ const styles = StyleSheet.create({
         borderColor: "#ccc",
         margin: 10,
         fontSize: 19,
-        fontFamily: 'Roboto-Regular',
+        fontFamily: 'Roboto-Medium',
     },
     tabContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginRight: 20,
     },
-    autoPopButton: {
+    autoPopButtonContainer: {
+        flexDirection: 'row',
+        alignSelf: 'flex-start',
+        justifyContent: 'center',
+        marginLeft: 37,
+        marginBottom: 5,
+        height: 40,
+        width: 40,
+        borderRadius: 40,
+        backgroundColor: '#8ac6d1',
     },
     questionTab: {
         flexDirection: 'row',
         alignSelf: 'flex-end',
         justifyContent: 'center',
-        width: 40,
+        width: 50,
+        height: 45,
+        marginTop: 5,
         marginRight: 6,
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
         elevation: 10,
-        backgroundColor: 'green',
+        backgroundColor: '#35477d',
     },
     questionButtonText: {
         fontSize: 24,
@@ -395,7 +411,6 @@ const styles = StyleSheet.create({
         backgroundColor: "#eaeaea",
         borderRadius: 4,
         marginHorizontal: 25,
-        // marginTop: 10,
         marginBottom: 35,
         elevation: 10,
     },
@@ -408,12 +423,15 @@ const styles = StyleSheet.create({
     questionsHeader: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        margin: 15,
+        padding: 15,
         elevation: 5,
+        backgroundColor: '#d1d1d1',
     },
     questionHeaderText: {
         flexDirection: 'row',
         justifyContent: 'flex-start',
+        fontSize: 22,
+        fontFamily: 'Roboto-Medium',
     },
     questionHeaderButtons: {
         flexDirection: 'row',
@@ -426,14 +444,21 @@ const styles = StyleSheet.create({
     questionsList: {
         marginTop: 14,
     },
+    emptyBlock: {
+        paddingVertical: 36,
+        paddingLeft: 18,
+        paddingRight: 16,
+        marginTop: 0,
+        marginBottom: 8,
+    },
     addQuestionButton: {
-        width: 60,
-        height: 60,
-        borderRadius: 60 / 2,
+        width: 55,
+        height: 55,
+        borderRadius: 55 / 2,
         backgroundColor: '#00BCD4',
         position: 'absolute',
-        bottom: 40,
-        right: 30,
+        bottom: 20,
+        right: 20,
         alignSelf: 'flex-end',
         justifyContent: 'center',
         elevation: 7,

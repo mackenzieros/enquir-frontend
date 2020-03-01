@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Modal, Text, FlatList, Button, View, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default class Question extends Component {
     state = {
@@ -26,12 +27,12 @@ export default class Question extends Component {
                 <View style={styles.questionEditContainer}>
                     <TouchableOpacity onPress={this.edit}>
                         <View style={styles.editQuestion}>
-                            <Text>{'D'}</Text>
+                            <Icon name='pencil' size={20} />
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => this.props.delete(question)}>
                         <View style={styles.deleteQuestion}>
-                            <Text>{'X'}</Text>
+                            <Icon name='trash' size={20} />
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -42,7 +43,6 @@ export default class Question extends Component {
 
 const styles = StyleSheet.create({
     questionContainer: {
-        flex: 0,
         flexDirection: 'row',  // main axis
         justifyContent: 'space-between', // main axis
         paddingTop: 10,
@@ -63,6 +63,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-end',
     },
-    editQuestion: {},
+    editQuestion: {
+        marginRight: 12,
+    },
     deleteQuestion: {},
 });
