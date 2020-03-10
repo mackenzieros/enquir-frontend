@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Modal, TouchableOpacity, TouchableWithoutFeedback, FlatList, Text, Keyboard, Button, View, StyleSheet, TextInput, ActivityIndicator } from 'react-native';
+import { Alert, Modal, TouchableOpacity, TouchableWithoutFeedback, FlatList, Text, Keyboard, Button, View, StyleSheet, TextInput, ActivityIndicator } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Question from './Question';
 import Storage from '../storage/Storage';
+import Loader from './Loader';
 
 const storage = new Storage();
-const WEB_SCRAPER_API_URL = 'EC2Co-EcsEl-WJW99ZSC6W4S-1501695430.us-west-1.elb.amazonaws.com:5000/autopopcontent';
+const WEB_SCRAPER_API_URL = 'https://czx2q94gxb.execute-api.us-west-1.amazonaws.com/dev/autopopcontent';
 const QUESTION_GENERATOR_API_URL = 'https://rocky-caverns-51964.herokuapp.com/genquest';
 
 // Dismiss keyboard when touching anywhere
@@ -19,9 +20,9 @@ const DismissKeyboard = ({ children }) => (
 // For displaying tab icon
 const TabIcon = ({ showingQuestions }) => {
     if (showingQuestions) {
-        return <Icon name="pencil" size={35} color='#fffdf9' style={{marginTop: 5}} />;
+        return <Icon name="pencil" size={35} color='#fffdf9' style={{ marginTop: 5 }} />;
     }
-    return <Icon name="question" size={35} color='#fffdf9' style={{marginTop: 5}} />;
+    return <Icon name="question" size={35} color='#fffdf9' style={{ marginTop: 5 }} />;
 };
 
 export default class NotecardModal extends Component {
@@ -121,6 +122,12 @@ export default class NotecardModal extends Component {
 
     // Scrape web page for content on a topic
     autoPop = async () => {
+        const { topicInput, notesInput } = this.state;
+        if (topicInput.length < 1) {
+            Alert.alert('To use the auto notecard maker, a topic must be provided!');
+            return;
+        }
+
         try {
             this.setState({
                 isLoading: true,    // show loader while request is performing
@@ -130,29 +137,52 @@ export default class NotecardModal extends Component {
                 query: this.state.topicInput,
             });
 
+            if (res.status !== 200) {
+                throw Error;
+            }
+
+            const { data } = res;
+            
+            // Add a couple newlines if notes already exist
             this.setState({
-                isLoading: false,
-                notesInput: res,
+                notesInput: notesInput.length ? notesInput.concat(`\n\n${data.blurb}`) : data.blurb,
             });
         } catch (err) {
             console.log('Err occurred communicating with scraper: ', err);
+            Alert.alert('Sorry!', `Couldn\'t find notes for "${topicInput}"`);
         }
+        this.setState({
+            isLoading: false,
+        });
     };
 
     // Generate questions given content
     generateQuestions = async () => {
         try {
-            // TODO: show progress modal
+            this.setState({
+                isLoading: true,    // show loader while request is performing
+            });
+
             const res = await axios.post(QUESTION_GENERATOR_API_URL, {
                 blurb: this.state.notesInput,
             });
 
-            this.setState({
-                questions: this.state.questions.concat(res.data.questions),    // add to existing questions
-            });
+            const { questions } = res.data;
+
+            if (questions.length < 1) {
+                Alert.alert('Sorry!', 'Wasn\'t able to generate questions for this notecard');
+            } else {
+                this.setState({
+                    questions: this.state.questions.concat(res.data.questions),    // add to existing questions
+                });
+            }
         } catch (err) {
             console.log('Err occurred communicating with question generator: ', err);
+            Alert.alert('ERROR', 'Unable to generate questions');
         }
+        this.setState({
+            isLoading: false,
+        });
     };
 
     addQuestion = () => {
@@ -216,114 +246,109 @@ export default class NotecardModal extends Component {
             <Modal
                 animationType='slide'
                 onRequestClose={this.onClose} >
-                {
-                    isLoading &&
-                    <ActivityIndicator size='large' color='#0064e1' />
-                }
-
-                {
-                    !isLoading &&
-                    <DismissKeyboard>
-                        <View style={{ flex: 1 }}>
-                            <View style={styles.menu}>
+                <DismissKeyboard>
+                    <View style={{ flex: 1 }}>
+                        <Loader
+                            loading={isLoading}
+                        />
+                        <View style={styles.menu}>
+                            <TouchableOpacity
+                                style={styles.closeButton}
+                                onPress={this.onClose} >
+                                <View style={styles.closeContainer}>
+                                    <Icon name='chevron-left' size={30} />
+                                </View>
+                            </TouchableOpacity>
+                            <View style={styles.saveContainer}>
                                 <TouchableOpacity
-                                    style={styles.closeButton}
-                                    onPress={this.onClose} >
-                                    <View style={styles.closeContainer}>
-                                        <Icon name='chevron-left' size={30} />
-                                    </View>
+                                    style={styles.saveButton}
+                                    onPress={this.onSave} >
+                                    <Text style={styles.saveButtonText}>SAVE</Text>
                                 </TouchableOpacity>
-                                <View style={styles.saveContainer}>
-                                    <TouchableOpacity
-                                        style={styles.saveButton}
-                                        onPress={this.onSave} >
-                                        <Text style={styles.saveButtonText}>SAVE</Text>
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-                            <View style={styles.container}>
-                                <View style={styles.topicContainer}>
-                                    <TextInput
-                                        style={styles.topicInput}
-                                        onChangeText={(topicInput) => this.setState({ topicInput })}
-                                        value={this.state.topicInput}
-                                        placeholder={'Enter topic'}
-                                    />
-                                </View>
-                                <View style={styles.tabContainer}>
-                                    <TouchableOpacity 
-                                        onPress={this.autoPop} >
-                                        <View style={styles.autoPopButtonContainer}>
-                                            <Icon name='magic' size={30} color='#fffdf9' style={{marginTop: 5.5}} />
-                                        </View>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity
-                                        onPress={this.showQuestions} >
-                                        <View style={styles.questionTab}>
-                                            <TabIcon showingQuestions={showingQuestions}/>
-                                        </View>
-                                    </TouchableOpacity>
-                                </View>
-                                <View style={styles.notesContainer}>
-                                    {
-                                        showingQuestions &&
-                                        <View style={{ flex: 1 }}>
-                                            <View style={styles.questionsHeader}>
-                                                <Text style={styles.questionHeaderText}>Questions</Text>
-                                                <View style={styles.questionHeaderButtons}>
-                                                    <TouchableOpacity
-                                                        onPress={this.generateQuestions} >
-                                                        <View style={styles.questionGenButton}>
-                                                            <Icon name='question-circle' size={25} />
-                                                        </View>
-                                                    </TouchableOpacity>
-                                                    <TouchableOpacity>
-                                                        <View style={styles.notifButton}>
-                                                            <Icon name='bell' size={20} />
-                                                        </View>
-                                                    </TouchableOpacity>
-                                                </View>
-                                            </View>
-                                            <FlatList
-                                                data={questions}
-                                                renderItem={(question) =>
-                                                    <Question
-                                                        question={question}
-                                                        delete={this.deleteQuestion}
-                                                    />
-                                                }
-                                                keyExtractor={(item, index) => index.toString()}
-                                                style={styles.questionsList}
-                                                ListFooterComponent={() => <View />}
-                                                ListFooterComponentStyle={styles.emptyBlock}
-                                            />
-                                            {
-                                                showingAddQuestionButton &&
-                                                <TouchableOpacity
-                                                    style={styles.addQuestionButton}
-                                                    onPress={this.addQuestion} >
-                                                    <Icon name='plus' size={30} style={{ marginLeft: 16, }} />
-                                                </TouchableOpacity>
-                                            }
-                                        </View>
-                                    }
-
-                                    {
-                                        !showingQuestions &&
-                                        <TextInput
-                                            style={styles.notesInput}
-                                            multiline={true}
-                                            onChangeText={(notesInput) => this.setState({ notesInput })}
-                                            value={notesInput}
-                                            placeholder={'Enter notes'}
-                                            textAlignVertical={'top'}
-                                        />
-                                    }
-                                </View>
                             </View>
                         </View>
-                    </DismissKeyboard>
-                }
+                        <View style={styles.container}>
+                            <View style={styles.topicContainer}>
+                                <TextInput
+                                    style={styles.topicInput}
+                                    onChangeText={(topicInput) => this.setState({ topicInput })}
+                                    value={this.state.topicInput}
+                                    placeholder={'Enter topic'}
+                                />
+                            </View>
+                            <View style={styles.tabContainer}>
+                                <TouchableOpacity
+                                    onPress={this.autoPop} >
+                                    <View style={styles.autoPopButtonContainer}>
+                                        <Icon name='magic' size={30} color='#fffdf9' style={{ marginTop: 5.5 }} />
+                                    </View>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    onPress={this.showQuestions} >
+                                    <View style={styles.questionTab}>
+                                        <TabIcon showingQuestions={showingQuestions} />
+                                    </View>
+                                </TouchableOpacity>
+                            </View>
+                            <View style={styles.notesContainer}>
+                                {
+                                    showingQuestions &&
+                                    <View style={{ flex: 1 }}>
+                                        <View style={styles.questionsHeader}>
+                                            <Text style={styles.questionHeaderText}>Questions</Text>
+                                            <View style={styles.questionHeaderButtons}>
+                                                <TouchableOpacity
+                                                    onPress={this.generateQuestions} >
+                                                    <View style={styles.questionGenButton}>
+                                                        <Icon name='question-circle' size={25} />
+                                                    </View>
+                                                </TouchableOpacity>
+                                                <TouchableOpacity>
+                                                    <View style={styles.notifButton}>
+                                                        <Icon name='bell' size={20} />
+                                                    </View>
+                                                </TouchableOpacity>
+                                            </View>
+                                        </View>
+                                        <FlatList
+                                            data={questions}
+                                            renderItem={(question) =>
+                                                <Question
+                                                    question={question}
+                                                    delete={this.deleteQuestion}
+                                                />
+                                            }
+                                            keyExtractor={(item, index) => index.toString()}
+                                            style={styles.questionsList}
+                                            ListFooterComponent={() => <View />}
+                                            ListFooterComponentStyle={styles.emptyBlock}
+                                        />
+                                        {
+                                            showingAddQuestionButton &&
+                                            <TouchableOpacity
+                                                style={styles.addQuestionButton}
+                                                onPress={this.addQuestion} >
+                                                <Icon name='plus' size={30} style={{ marginLeft: 16, }} />
+                                            </TouchableOpacity>
+                                        }
+                                    </View>
+                                }
+
+                                {
+                                    !showingQuestions &&
+                                    <TextInput
+                                        style={styles.notesInput}
+                                        multiline={true}
+                                        onChangeText={(notesInput) => this.setState({ notesInput })}
+                                        value={notesInput}
+                                        placeholder={'Enter notes'}
+                                        textAlignVertical={'top'}
+                                    />
+                                }
+                            </View>
+                        </View>
+                    </View>
+                </DismissKeyboard>
             </Modal>
         );
     }

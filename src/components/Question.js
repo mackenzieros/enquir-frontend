@@ -57,6 +57,8 @@ const styles = StyleSheet.create({
     },
     questionText: {
         justifyContent: 'flex-start',
+        flex: 1,
+        flexWrap: 'wrap',
     },
     questionEditContainer: {
         flex: 1,
