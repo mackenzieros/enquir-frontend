@@ -1,35 +1,30 @@
 import React, { Component } from 'react';
-import { Modal, Text, FlatList, Button, View, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { 
+    View, 
+    StyleSheet, 
+    TextInput, 
+    TouchableOpacity,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default class Question extends Component {
     state = {
         question: this.props.question,
-        editing: false,
-    };
-
-    edit = () => {
-        this.setState({
-            editing: !this.state.editing,
-        });
     };
 
     render() {
-        const { question, editing } = this.state;
+        const { question } = this.state;
 
         return (
             <View style={styles.questionContainer}>
-                <TextInput
-                    style={styles.questionText}
-                    value={question.item}
-                    editable={editing}
-                />
-                <View style={styles.questionEditContainer}>
-                    <TouchableOpacity onPress={this.edit}>
-                        <View style={styles.editQuestion}>
-                            <Icon name='pencil' size={20} />
-                        </View>
-                    </TouchableOpacity>
+                <View style={styles.questionTextContainer}>
+                    <TextInput
+                        style={styles.questionText}
+                        value={question.item}
+                        multiline={true}
+                    />
+                </View>
+                <View style={styles.editMenu}>
                     <TouchableOpacity onPress={() => this.props.delete(question)}>
                         <View style={styles.deleteQuestion}>
                             <Icon name='trash' size={20} />
@@ -43,8 +38,8 @@ export default class Question extends Component {
 
 const styles = StyleSheet.create({
     questionContainer: {
-        flexDirection: 'row',  // main axis
-        justifyContent: 'space-between', // main axis
+        flexDirection: 'row',
+        justifyContent: 'space-between',
         paddingTop: 10,
         paddingBottom: 10,
         paddingLeft: 18,
@@ -55,18 +50,21 @@ const styles = StyleSheet.create({
         borderRadius: 3,
         backgroundColor: 'grey',
     },
-    questionText: {
+    questionTextContainer: {
+        flex: 12,
+        flexDirection: 'row',
         justifyContent: 'flex-start',
+    },
+    questionText: {
         flex: 1,
         flexWrap: 'wrap',
+        fontSize: 16,
+        fontFamily: 'Roboto-Regular',
     },
-    questionEditContainer: {
+    editMenu: {
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'flex-end',
-    },
-    editQuestion: {
-        marginRight: 12,
     },
     deleteQuestion: {},
 });

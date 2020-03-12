@@ -1,6 +1,17 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Alert, Modal, TouchableOpacity, TouchableWithoutFeedback, FlatList, Text, Keyboard, Button, View, StyleSheet, TextInput, ActivityIndicator } from 'react-native';
+import {
+    Alert,
+    Modal,
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+    FlatList,
+    Text,
+    Keyboard,
+    View,
+    StyleSheet,
+    TextInput,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Question from './Question';
 import Storage from '../storage/Storage';
@@ -142,7 +153,7 @@ export default class NotecardModal extends Component {
             }
 
             const { data } = res;
-            
+
             // Add a couple newlines if notes already exist
             this.setState({
                 notesInput: notesInput.length ? notesInput.concat(`\n\n${data.blurb}`) : data.blurb,
@@ -294,22 +305,6 @@ export default class NotecardModal extends Component {
                                 {
                                     showingQuestions &&
                                     <View style={{ flex: 1 }}>
-                                        <View style={styles.questionsHeader}>
-                                            <Text style={styles.questionHeaderText}>Questions</Text>
-                                            <View style={styles.questionHeaderButtons}>
-                                                <TouchableOpacity
-                                                    onPress={this.generateQuestions} >
-                                                    <View style={styles.questionGenButton}>
-                                                        <Icon name='question-circle' size={25} />
-                                                    </View>
-                                                </TouchableOpacity>
-                                                <TouchableOpacity>
-                                                    <View style={styles.notifButton}>
-                                                        <Icon name='bell' size={20} />
-                                                    </View>
-                                                </TouchableOpacity>
-                                            </View>
-                                        </View>
                                         <FlatList
                                             data={questions}
                                             renderItem={(question) =>
@@ -320,6 +315,25 @@ export default class NotecardModal extends Component {
                                             }
                                             keyExtractor={(item, index) => index.toString()}
                                             style={styles.questionsList}
+                                            stickyHeaderIndices={[0]}
+                                            ListHeaderComponent={() =>
+                                                <View style={styles.questionsHeader}>
+                                                    <Text style={styles.questionHeaderText}>Questions</Text>
+                                                    <View style={styles.questionHeaderButtons}>
+                                                        <TouchableOpacity
+                                                            onPress={this.generateQuestions} >
+                                                            <View style={styles.questionGenButton}>
+                                                                <Icon name='question-circle' size={25} />
+                                                            </View>
+                                                        </TouchableOpacity>
+                                                        <TouchableOpacity>
+                                                            <View style={styles.notifButton}>
+                                                                <Icon name='bell' size={20} />
+                                                            </View>
+                                                        </TouchableOpacity>
+                                                    </View>
+                                                </View>
+                                            }
                                             ListFooterComponent={() => <View />}
                                             ListFooterComponentStyle={styles.emptyBlock}
                                         />
@@ -467,7 +481,6 @@ const styles = StyleSheet.create({
     notifButton: {
     },
     questionsList: {
-        marginTop: 14,
     },
     emptyBlock: {
         paddingVertical: 36,

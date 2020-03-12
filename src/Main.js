@@ -1,5 +1,13 @@
 import React, { Component } from 'react';
-import { SafeAreaView, FlatList, StyleSheet, View, Text, Button, Modal, Alert, TouchableOpacity, TouchableNativeFeedback } from 'react-native';
+import { 
+    SafeAreaView, 
+    FlatList, 
+    StyleSheet, 
+    View, 
+    Text, 
+    TouchableOpacity, 
+    TouchableNativeFeedback,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import NotecardModal from './components/NotecardModal';
 import Storage from './storage/Storage';
