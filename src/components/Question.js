@@ -10,24 +10,27 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 export default class Question extends Component {
     state = {
         question: this.props.question,
+        questionInput: this.props.question.item,
     };
 
     render() {
-        const { question } = this.state;
+        const { question, questionInput } = this.state;
 
         return (
             <View style={styles.questionContainer}>
                 <View style={styles.questionTextContainer}>
                     <TextInput
                         style={styles.questionText}
-                        value={question.item}
+                        onChangeText={(questionInput) => this.setState({ questionInput })}
+                        onEndEditing={() => this.props.save(question.index, questionInput)}
+                        value={questionInput}
                         multiline={true}
                     />
                 </View>
                 <View style={styles.editMenu}>
-                    <TouchableOpacity onPress={() => this.props.delete(question)}>
+                    <TouchableOpacity onPress={() => this.props.delete(question.index)}>
                         <View style={styles.deleteQuestion}>
-                            <Icon name='trash' size={20} />
+                            <Icon name='trash' size={18} />
                         </View>
                     </TouchableOpacity>
                 </View>

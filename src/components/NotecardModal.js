@@ -202,22 +202,29 @@ export default class NotecardModal extends Component {
         });
     };
 
-    deleteQuestion = (item) => {
-        var questions = null;
-        for (var i = 0; i < this.state.questions.length; ++i) {
-            if (i == item.index) {
-                questions = [
-                    ...this.state.questions.slice(0, i),
-                    ...this.state.questions.slice(i + 1)
-                ];
-                break;
-            }
-        }
-
-        if (!questions) {
-            console.log('err deleting question');
+    saveQuestion = (index, newQuestion) => {
+        if (index < 0 || index > this.state.questions.length) {
+            console.log('Err: indexing error. Unable to save question');
             return;
         }
+        var questions = [...this.state.questions];
+        questions[index] = newQuestion;
+
+        this.setState({
+            questions: questions,
+        });
+    };
+
+    deleteQuestion = (index) => {
+        if (index < 0 || index > this.state.questions.length) {
+            console.log('Err: indexing error. Unable to delete question');
+            return;
+        }
+
+        var questions = [
+            ...this.state.questions.slice(0, index),
+            ...this.state.questions.slice(index + 1)
+        ];
 
         this.setState({
             questions: questions,
@@ -251,7 +258,7 @@ export default class NotecardModal extends Component {
             return null;
         }
 
-        const { isLoading, showingQuestions, showingAddQuestionButton, notesInput, questions } = this.state;
+        const { isLoading, showingQuestions, showingAddQuestionButton, topicInput, notesInput, questions } = this.state;
 
         return (
             <Modal
@@ -283,7 +290,7 @@ export default class NotecardModal extends Component {
                                 <TextInput
                                     style={styles.topicInput}
                                     onChangeText={(topicInput) => this.setState({ topicInput })}
-                                    value={this.state.topicInput}
+                                    value={topicInput}
                                     placeholder={'Enter topic'}
                                 />
                             </View>
@@ -310,6 +317,7 @@ export default class NotecardModal extends Component {
                                             renderItem={(question) =>
                                                 <Question
                                                     question={question}
+                                                    save={this.saveQuestion}
                                                     delete={this.deleteQuestion}
                                                 />
                                             }
