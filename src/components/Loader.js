@@ -3,7 +3,8 @@ import {
     StyleSheet,
     View,
     Modal,
-    ActivityIndicator
+    ActivityIndicator,
+    Text,
 } from 'react-native';
 
 // Credit to Kelley Rose (src: https://medium.com/@kelleyannerose/react-native-activityindicator-for-a-quick-easy-loading-animation-593c06c044dc)
@@ -11,6 +12,7 @@ import {
 const Loader = props => {
     const {
         loading,
+        loadText,
         ...attributes
     } = props;
     return (
@@ -21,6 +23,7 @@ const Loader = props => {
             onRequestClose={() => {console.log('close modal')}}>
             <View style={styles.modalBackground}>
                 <View style={styles.activityIndicatorWrapper}>
+                    <Text style={styles.loadText}>{loadText}</Text>
                     <ActivityIndicator
                         animating={loading} />
                 </View>
@@ -39,13 +42,17 @@ const styles = StyleSheet.create({
     },
     activityIndicatorWrapper: {
       backgroundColor: '#FFFFFF',
-      height: 100,
-      width: 100,
+      height: 120,
+      width: 130,
       borderRadius: 10,
       display: 'flex',
       alignItems: 'center',
-      justifyContent: 'space-around'
-    }
+      justifyContent: 'center',
+    },
+    loadText: {
+        alignSelf: 'center',
+        marginBottom: 20,
+    },
   });
 
 export default Loader;

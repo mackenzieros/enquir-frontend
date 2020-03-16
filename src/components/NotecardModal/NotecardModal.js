@@ -9,13 +9,13 @@ import {
     Text,
     Keyboard,
     View,
-    StyleSheet,
     TextInput,
 } from 'react-native';
+import { containers, buttons, inputs, text } from './Styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Question from './Question';
-import Storage from '../storage/Storage';
-import Loader from './Loader';
+import Question from '../Question';
+import Storage from '../../storage/Storage';
+import Loader from '../Loader';
 
 const storage = new Storage();
 const WEB_SCRAPER_API_URL = 'https://czx2q94gxb.execute-api.us-west-1.amazonaws.com/dev/autopopcontent';
@@ -70,6 +70,7 @@ export default class NotecardModal extends Component {
                 noteItem: item,
                 topicInput: item.topic,
                 notesInput: item.notes,
+                showingQuestions: false,
                 questions: item.questions,
             });
         }
@@ -92,6 +93,7 @@ export default class NotecardModal extends Component {
     onSave = async () => {
         this.setState({
             isLoading: true,    // show loader while request is performing
+            loadingState: 'Saving...',
         });
 
         // get existing notes
@@ -135,13 +137,14 @@ export default class NotecardModal extends Component {
     autoPop = async () => {
         const { topicInput, notesInput } = this.state;
         if (topicInput.length < 1) {
-            Alert.alert('To use the auto notecard maker, a topic must be provided!');
+            Alert.alert('To use the auto notecard maker, a topic must be provided');
             return;
         }
 
         try {
             this.setState({
                 isLoading: true,    // show loader while request is performing
+                loadingState: 'Gathering notes...',
             });
 
             const res = await axios.post(WEB_SCRAPER_API_URL, {
@@ -172,6 +175,7 @@ export default class NotecardModal extends Component {
         try {
             this.setState({
                 isLoading: true,    // show loader while request is performing
+                loadingState: 'Creating questions...',
             });
 
             const res = await axios.post(QUESTION_GENERATOR_API_URL, {
@@ -181,7 +185,7 @@ export default class NotecardModal extends Component {
             const { questions } = res.data;
 
             if (questions.length < 1) {
-                Alert.alert('Sorry!', 'Wasn\'t able to generate questions for this notecard');
+                Alert.alert('Sorry!', 'Could not generate questions for this notecard');
             } else {
                 this.setState({
                     questions: this.state.questions.concat(res.data.questions),    // add to existing questions
@@ -196,12 +200,14 @@ export default class NotecardModal extends Component {
         });
     };
 
+    // Add an empty question
     addQuestion = () => {
         this.setState({
             questions: this.state.questions.concat(['']),
         });
     };
 
+    // Overwrite an existing questions content
     saveQuestion = (index, newQuestion) => {
         if (index < 0 || index > this.state.questions.length) {
             console.log('Err: indexing error. Unable to save question');
@@ -215,6 +221,7 @@ export default class NotecardModal extends Component {
         });
     };
 
+    // Removes a question
     deleteQuestion = (index) => {
         if (index < 0 || index > this.state.questions.length) {
             console.log('Err: indexing error. Unable to delete question');
@@ -231,6 +238,7 @@ export default class NotecardModal extends Component {
         });
     };
 
+    // Keyboard listener for hiding/showing a button if keyboard is active/inactive
     _keyboardDidShow = () => {
         this.setState({
             showingAddQuestionButton: false,
@@ -258,7 +266,7 @@ export default class NotecardModal extends Component {
             return null;
         }
 
-        const { isLoading, showingQuestions, showingAddQuestionButton, topicInput, notesInput, questions } = this.state;
+        const { isLoading, loadingState, showingQuestions, showingAddQuestionButton, topicInput, notesInput, questions } = this.state;
 
         return (
             <Modal
@@ -268,47 +276,47 @@ export default class NotecardModal extends Component {
                     <View style={{ flex: 1 }}>
                         <Loader
                             loading={isLoading}
+                            loadText={loadingState}
                         />
-                        <View style={styles.menu}>
+                        <View style={containers.menu}>
                             <TouchableOpacity
-                                style={styles.closeButton}
+                                style={buttons.closeButton}
                                 onPress={this.onClose} >
-                                <View style={styles.closeContainer}>
+                                <View style={containers.closeContainer}>
                                     <Icon name='chevron-left' size={30} />
                                 </View>
                             </TouchableOpacity>
-                            <View style={styles.saveContainer}>
+                            <View style={containers.saveContainer}>
                                 <TouchableOpacity
-                                    style={styles.saveButton}
                                     onPress={this.onSave} >
-                                    <Text style={styles.saveButtonText}>SAVE</Text>
+                                    <Text style={text.saveButtonText}>SAVE</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
-                        <View style={styles.container}>
-                            <View style={styles.topicContainer}>
+                        <View style={containers.content}>
+                            <View style={containers.topicContainer}>
                                 <TextInput
-                                    style={styles.topicInput}
+                                    style={inputs.topicInput}
                                     onChangeText={(topicInput) => this.setState({ topicInput })}
                                     value={topicInput}
                                     placeholder={'Enter topic'}
                                 />
                             </View>
-                            <View style={styles.tabContainer}>
+                            <View style={containers.tabContainer}>
                                 <TouchableOpacity
                                     onPress={this.autoPop} >
-                                    <View style={styles.autoPopButtonContainer}>
+                                    <View style={buttons.autoPopButtonContainer}>
                                         <Icon name='magic' size={30} color='#fffdf9' style={{ marginTop: 5.5 }} />
                                     </View>
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     onPress={this.showQuestions} >
-                                    <View style={styles.questionTab}>
+                                    <View style={buttons.questionTab}>
                                         <TabIcon showingQuestions={showingQuestions} />
                                     </View>
                                 </TouchableOpacity>
                             </View>
-                            <View style={styles.notesContainer}>
+                            <View style={containers.notesContainer}>
                                 {
                                     showingQuestions &&
                                     <View style={{ flex: 1 }}>
@@ -322,20 +330,19 @@ export default class NotecardModal extends Component {
                                                 />
                                             }
                                             keyExtractor={(item, index) => index.toString()}
-                                            style={styles.questionsList}
                                             stickyHeaderIndices={[0]}
                                             ListHeaderComponent={() =>
-                                                <View style={styles.questionsHeader}>
-                                                    <Text style={styles.questionHeaderText}>Questions</Text>
-                                                    <View style={styles.questionHeaderButtons}>
+                                                <View style={containers.questionsHeader}>
+                                                    <Text style={text.questionHeaderText}>Questions</Text>
+                                                    <View style={buttons.questionHeaderButtons}>
                                                         <TouchableOpacity
                                                             onPress={this.generateQuestions} >
-                                                            <View style={styles.questionGenButton}>
+                                                            <View style={buttons.questionGenButton}>
                                                                 <Icon name='question-circle' size={25} />
                                                             </View>
                                                         </TouchableOpacity>
                                                         <TouchableOpacity>
-                                                            <View style={styles.notifButton}>
+                                                            <View style={buttons.notifButton}>
                                                                 <Icon name='bell' size={20} />
                                                             </View>
                                                         </TouchableOpacity>
@@ -343,12 +350,12 @@ export default class NotecardModal extends Component {
                                                 </View>
                                             }
                                             ListFooterComponent={() => <View />}
-                                            ListFooterComponentStyle={styles.emptyBlock}
+                                            ListFooterComponentStyle={containers.emptyBlock}
                                         />
                                         {
                                             showingAddQuestionButton &&
                                             <TouchableOpacity
-                                                style={styles.addQuestionButton}
+                                                style={buttons.addQuestionButton}
                                                 onPress={this.addQuestion} >
                                                 <Icon name='plus' size={30} style={{ marginLeft: 16, }} />
                                             </TouchableOpacity>
@@ -359,7 +366,7 @@ export default class NotecardModal extends Component {
                                 {
                                     !showingQuestions &&
                                     <TextInput
-                                        style={styles.notesInput}
+                                        style={inputs.notesInput}
                                         multiline={true}
                                         onChangeText={(notesInput) => this.setState({ notesInput })}
                                         value={notesInput}
@@ -375,138 +382,3 @@ export default class NotecardModal extends Component {
         );
     }
 };
-
-const styles = StyleSheet.create({
-    menu: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: 5,
-    },
-    closeContainer: {
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-        width: 65,
-        height: 30,
-        marginTop: 5,
-        backgroundColor: 'white',
-    },
-    closeButton: {
-        marginLeft: 16,
-        marginVertical: 7,
-    },
-    saveContainer: {
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-    },
-    saveButtonText: {
-        fontSize: 20,
-        fontFamily: 'Roboto-Medium',
-        marginRight: 18,
-    },
-    container: {
-        flex: 1,
-    },
-    topicContainer: {
-        flexDirection: 'row',
-        backgroundColor: "#eaeaea",
-        marginHorizontal: 25,
-        marginBottom: 10,
-    },
-    topicInput: {
-        flex: 1,
-        borderColor: "#ccc",
-        margin: 10,
-        fontSize: 19,
-        fontFamily: 'Roboto-Medium',
-    },
-    tabContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginRight: 20,
-    },
-    autoPopButtonContainer: {
-        flexDirection: 'row',
-        alignSelf: 'flex-start',
-        justifyContent: 'center',
-        marginLeft: 37,
-        marginBottom: 5,
-        height: 40,
-        width: 40,
-        borderRadius: 40,
-        backgroundColor: '#8ac6d1',
-    },
-    questionTab: {
-        flexDirection: 'row',
-        alignSelf: 'flex-end',
-        justifyContent: 'center',
-        width: 50,
-        height: 45,
-        marginTop: 5,
-        marginRight: 6,
-        borderTopLeftRadius: 30,
-        borderTopRightRadius: 30,
-        elevation: 10,
-        backgroundColor: '#35477d',
-    },
-    questionButtonText: {
-        fontSize: 24,
-    },
-    notesContainer: {
-        flex: 2,
-        flexDirection: 'row',
-        backgroundColor: "#eaeaea",
-        borderRadius: 4,
-        marginHorizontal: 25,
-        marginBottom: 35,
-        elevation: 10,
-    },
-    notesInput: {
-        flex: 1,
-        margin: 10,
-        fontSize: 18,
-        fontFamily: 'Roboto-Regular',
-    },
-    questionsHeader: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        padding: 15,
-        elevation: 5,
-        backgroundColor: '#d1d1d1',
-    },
-    questionHeaderText: {
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-        fontSize: 22,
-        fontFamily: 'Roboto-Medium',
-    },
-    questionHeaderButtons: {
-        flexDirection: 'row',
-        justifyContent: 'flex-end'
-    },
-    questionGenButton: {
-    },
-    notifButton: {
-    },
-    questionsList: {
-    },
-    emptyBlock: {
-        paddingVertical: 36,
-        paddingLeft: 18,
-        paddingRight: 16,
-        marginTop: 0,
-        marginBottom: 8,
-    },
-    addQuestionButton: {
-        width: 55,
-        height: 55,
-        borderRadius: 55 / 2,
-        backgroundColor: '#00BCD4',
-        position: 'absolute',
-        bottom: 20,
-        right: 20,
-        alignSelf: 'flex-end',
-        justifyContent: 'center',
-        elevation: 7,
-    },
-});

@@ -9,7 +9,7 @@ import {
     TouchableNativeFeedback,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import NotecardModal from './components/NotecardModal';
+import NotecardModal from './components/NotecardModal/NotecardModal';
 import Storage from './storage/Storage';
 
 const storage = new Storage();
