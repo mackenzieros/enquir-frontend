@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import { containers, buttons, inputs, text } from './Styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Question from '../Question';
+import Question from '../Question/Question';
 import Storage from '../../storage/Storage';
 import Loader from '../Loader';
 
