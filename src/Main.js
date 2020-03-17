@@ -20,55 +20,34 @@ let DATA = [
         id: '0',
         topic: 'First Item',
         notes: 'first blurb blah blah blah',
-        questions: ['What is this?'],
+        questions: [{
+            id: 0,
+            question: 'What is this?'
+        }],
     },
     {
         id: '1',
         topic: 'Second Item',
         notes: 'second blurb blah blah blah',
-        questions: ['What is this?'],
+        questions: [{
+            id: 0,
+            question: 'What is this?'
+        }],
     },
     {
         id: '2',
         topic: 'Marine biology',
         notes: 'Marine biology is the study of marine organisms, their behaviors and interactions with the environment. Marine biologists study biological oceanography and the associated fields of chemical, physical, and geological oceanography to understand marine organisms.',
-        questions: ['What is marine biology?', 'What do marine biologists study?'],
-    },
-    {
-        id: '3',
-        topic: 'First Item',
-        notes: 'first blurb blah blah blah',
-        questions: ['What is this?'],
-    },
-    {
-        id: '4',
-        topic: 'Second Item',
-        notes: 'second blurb blah blah blah',
-        questions: ['What is this?'],
-    },
-    {
-        id: '5',
-        topic: 'Marine biology',
-        notes: 'Marine biology is the study of marine organisms, their behaviors and interactions with the environment. Marine biologists study biological oceanography and the associated fields of chemical, physical, and geological oceanography to understand marine organisms.',
-        questions: ['What is marine biology?', 'What do marine biologists study?'],
-    },
-    {
-        id: '6',
-        topic: 'First Item',
-        notes: 'first blurb blah blah blah',
-        questions: ['What is this?'],
-    },
-    {
-        id: '7',
-        topic: 'Second Item',
-        notes: 'second blurb blah blah blah',
-        questions: ['What is this?'],
-    },
-    {
-        id: '8',
-        topic: 'Marine biology',
-        notes: 'Marine biology is the study of marine organisms, their behaviors and interactions with the environment. Marine biologists study biological oceanography and the associated fields of chemical, physical, and geological oceanography to understand marine organisms.',
-        questions: ['What is marine biology?', 'What do marine biologists study?'],
+        questions: [
+            {
+                id: 0,
+                question: 'What is marine biology?'
+            }, 
+            {
+                id: 1,
+                question: 'What do marine biologists study?',
+            }
+        ],
     },
 ];
 
@@ -136,7 +115,7 @@ export default class Main extends Component {
             }
         }
 
-        if (!notes) {
+        if (notes == null) {
             console.log('err trying to delete notecard');
             return;
         }

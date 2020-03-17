@@ -202,19 +202,31 @@ export default class NotecardModal extends Component {
 
     // Add an empty question
     addQuestion = () => {
+        const { questions } = this.state;
+        const id = questions.length == 0 ? 0 : questions[questions.length - 1].id + 1;
         this.setState({
-            questions: this.state.questions.concat(['']),
+            questions: this.state.questions.concat({
+                id,
+                question: '',
+            }),
         });
     };
 
     // Overwrite an existing questions content
-    saveQuestion = (index, newQuestion) => {
-        if (index < 0 || index > this.state.questions.length) {
-            console.log('Err: indexing error. Unable to save question');
+    saveQuestion = (id, newQuestion) => {
+        var questions = null;
+        for (var i = 0; i < this.state.questions.length; ++i) {
+            if (this.state.questions[i].id == id) {
+                questions = [...this.state.questions];
+                questions[i].question = newQuestion;
+                break;
+            }
+        }
+
+        if (questions == null) {
+            console.log('Error occurred while trying to save question.');
             return;
         }
-        var questions = [...this.state.questions];
-        questions[index] = newQuestion;
 
         this.setState({
             questions: questions,
@@ -222,16 +234,22 @@ export default class NotecardModal extends Component {
     };
 
     // Removes a question
-    deleteQuestion = (index) => {
-        if (index < 0 || index > this.state.questions.length) {
-            console.log('Err: indexing error. Unable to delete question');
-            return;
+    deleteQuestion = (id) => {
+        var questions = null;
+        for (var i = 0; i < this.state.questions.length; ++i) {
+            if (this.state.questions[i].id == id) {
+                var questions = [
+                    ...this.state.questions.slice(0, i),
+                    ...this.state.questions.slice(i + 1)
+                ];
+                break;
+            }
         }
 
-        var questions = [
-            ...this.state.questions.slice(0, index),
-            ...this.state.questions.slice(index + 1)
-        ];
+        if (questions == null) {
+            console.log('Error occurred: could not find question to delete');
+            return;
+        }
 
         this.setState({
             questions: questions,
@@ -265,7 +283,7 @@ export default class NotecardModal extends Component {
         if (!this.props.show) {
             return null;
         }
-
+        
         const { isLoading, loadingState, showingQuestions, showingAddQuestionButton, topicInput, notesInput, questions } = this.state;
 
         return (
@@ -322,14 +340,15 @@ export default class NotecardModal extends Component {
                                     <View style={{ flex: 1 }}>
                                         <FlatList
                                             data={questions}
-                                            renderItem={(question) =>
+                                            renderItem={({item}) =>
                                                 <Question
-                                                    question={question}
+                                                    id={item.id}
+                                                    question={item.question}
                                                     save={this.saveQuestion}
                                                     delete={this.deleteQuestion}
                                                 />
                                             }
-                                            keyExtractor={(item, index) => index.toString()}
+                                            keyExtractor={item => item.id}
                                             stickyHeaderIndices={[0]}
                                             ListHeaderComponent={() =>
                                                 <View style={containers.questionsHeader}>
