@@ -17,7 +17,7 @@ const NOTECARD_DESC_LIMIT = 75;
 
 let DATA = [
     {
-        id: '0',
+        id: 0,
         topic: 'First Item',
         notes: 'first blurb blah blah blah',
         questions: [{
@@ -26,7 +26,7 @@ let DATA = [
         }],
     },
     {
-        id: '1',
+        id: 1,
         topic: 'Second Item',
         notes: 'second blurb blah blah blah',
         questions: [{
@@ -35,7 +35,7 @@ let DATA = [
         }],
     },
     {
-        id: '2',
+        id: 2,
         topic: 'Marine biology',
         notes: 'Marine biology is the study of marine organisms, their behaviors and interactions with the environment. Marine biologists study biological oceanography and the associated fields of chemical, physical, and geological oceanography to understand marine organisms.',
         questions: [

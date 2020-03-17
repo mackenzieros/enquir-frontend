@@ -104,7 +104,7 @@ export default class NotecardModal extends Component {
 
         // overwrite notecard
         if (this.state.noteItem) {
-            const index = (existingNotes.findIndex((note) => note.id == this.state.noteItem.id)).toString();
+            const index = existingNotes.findIndex((note) => note.id == this.state.noteItem.id);
             existingNotes[index] = {
                 id: index,
                 topic: topic,
@@ -113,8 +113,7 @@ export default class NotecardModal extends Component {
             }
         } else {
             // add new notecard
-            const lastIndex = existingNotes.length > 0 ? existingNotes[existingNotes.length - 1].id : -1;
-            const newIndex = (Number.parseInt(lastIndex) + 1).toString();
+            const newIndex = existingNotes.length == 0 ? 0 : existingNotes[existingNotes.length - 1].id + 1;
 
             existingNotes.push({
                 id: newIndex,
