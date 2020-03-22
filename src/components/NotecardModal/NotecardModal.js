@@ -15,7 +15,6 @@ import { containers, buttons, inputs, text } from './Styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Question from '../Question/Question';
 import { Storage } from '../../services/Storage';
-import { PushNotification } from '../../services/PushNotification';
 import Loader from '../Loader/Loader';
 
 const WEB_SCRAPER_API_URL = 'https://czx2q94gxb.execute-api.us-west-1.amazonaws.com/dev/autopopcontent';
