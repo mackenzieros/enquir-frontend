@@ -90,7 +90,6 @@ export default class NotecardModal extends Component {
 
   // Saves notecard and generates questions
   onSave = async () => {
-    PushNotification.localNotification('Test Topic', 'When was I born?');
     this.setState({
       isLoading: true,    // show loader while request is performing
       loadingState: 'Saving...',
