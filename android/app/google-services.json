@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "271670903453",
+    "firebase_url": "https://enquir-push-notif.firebaseio.com",
+    "project_id": "enquir-push-notif",
+    "storage_bucket": "enquir-push-notif.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:271670903453:android:6311fb63cbff3063270a74",
+        "android_client_info": {
+          "package_name": "com.enquirfrontend"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "271670903453-9kfsjmfqplcomi3al9e25d94p8sba0lu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBinvDPeVRdAZ9DHHYeXZ5WshyZE_ASonI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "271670903453-9kfsjmfqplcomi3al9e25d94p8sba0lu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

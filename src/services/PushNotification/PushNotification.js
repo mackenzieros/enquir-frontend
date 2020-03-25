@@ -27,7 +27,24 @@ const localNotification = (topic, msg) => {
   });
 };
 
+const localNotificationSchedule = (topic, msg) => {
+  PushNotification.localNotificationSchedule({
+    autoCancel: true,
+    largeIcon: 'ic_launcher',
+    smallIcon: 'ic_notification',
+    color: "green",
+    vibrate: true,
+    vibration: 300,
+    title: topic,
+    message: msg,
+    playSound: true,
+    soundName: 'default',
+    date: new Date(Date.now() + 60*100),
+  });
+};
+
 export {
   configure,
   localNotification,
+  localNotificationSchedule,
 };
