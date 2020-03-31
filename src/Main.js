@@ -10,7 +10,6 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import NotecardModal from './components/NotecardModal/NotecardModal';
 import { Storage } from './services/Storage';
-import RemotePushController from './services/RemotePushNotification/RemotePushNotification';
 import { containers, buttons, text } from './MainStyles';
 const NOTECARD_DESC_LIMIT = 75;
 
@@ -173,7 +172,6 @@ export default class Main extends Component {
           }}>
           <Icon name='plus' size={30} style={{ marginLeft: 17.5, }} />
         </TouchableOpacity>
-        <RemotePushController />
       </SafeAreaView>
     );
   }

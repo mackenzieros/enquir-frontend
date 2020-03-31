@@ -349,7 +349,7 @@ export default class NotecardModal extends Component {
                           delete={this.deleteQuestion}
                         />
                       }
-                      keyExtractor={item => item.id}
+                      keyExtractor={item => (item.id).toString()}
                       stickyHeaderIndices={[0]}
                       ListHeaderComponent={() =>
                         <View style={containers.questionsHeader}>

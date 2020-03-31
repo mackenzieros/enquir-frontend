@@ -12,8 +12,9 @@ const configure = () => {
   });
 };
 
-const localNotification = (topic, msg) => {
+const localNotification = (id, topic, msg) => {
   PushNotification.localNotification({
+    id,
     autoCancel: true,
     largeIcon: 'ic_launcher',
     smallIcon: 'ic_notification',
@@ -27,8 +28,9 @@ const localNotification = (topic, msg) => {
   });
 };
 
-const localNotificationSchedule = (topic, msg) => {
+const localNotificationSchedule = (id, topic, msg) => {
   PushNotification.localNotificationSchedule({
+    id,
     autoCancel: true,
     largeIcon: 'ic_launcher',
     smallIcon: 'ic_notification',
@@ -40,11 +42,17 @@ const localNotificationSchedule = (topic, msg) => {
     playSound: true,
     soundName: 'default',
     date: new Date(Date.now() + 60*100),
+    repeatType: 'day',
   });
+};
+
+const cancelLocalNotification = (id) => {
+  PushNotification.cancelLocalNotifications({ id });
 };
 
 export {
   configure,
   localNotification,
   localNotificationSchedule,
+  cancelLocalNotification,
 };
