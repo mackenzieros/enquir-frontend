@@ -29,6 +29,9 @@ const localNotification = (id, topic, msg) => {
 };
 
 const localNotificationSchedule = (id, topic, msg) => {
+  const schedDate = new Date(Date.now());
+  schedDate.setHours(Math.floor(Math.random()*6) + 12);
+
   PushNotification.localNotificationSchedule({
     id,
     autoCancel: true,
@@ -41,13 +44,13 @@ const localNotificationSchedule = (id, topic, msg) => {
     message: msg,
     playSound: true,
     soundName: 'default',
-    date: new Date(Date.now() + 60*100),
+    date: schedDate,
     repeatType: 'day',
   });
 };
 
 const cancelLocalNotification = (id) => {
-  PushNotification.cancelLocalNotifications({ id });
+  PushNotification.cancelLocalNotifications({ id: id });
 };
 
 export {

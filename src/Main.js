@@ -11,6 +11,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import NotecardModal from './components/NotecardModal/NotecardModal';
 import { Storage } from './services/Storage';
 import { containers, buttons, text } from './MainStyles';
+import { PushNotification } from './services/PushNotification';
 const NOTECARD_DESC_LIMIT = 75;
 
 let DATA = [
@@ -22,6 +23,7 @@ let DATA = [
       id: 0,
       question: 'What is this?'
     }],
+    notifications: true,
   },
   {
     id: 1,
@@ -31,6 +33,7 @@ let DATA = [
       id: 0,
       question: 'What is this?'
     }],
+    notifications: true,
   },
   {
     id: 2,
@@ -46,6 +49,7 @@ let DATA = [
         question: 'What do marine biologists study?',
       }
     ],
+    notifications: true,
   },
 ];
 
@@ -104,15 +108,23 @@ export default class Main extends Component {
   deleteNote = async (item) => {
     var notes = null;
     for (var i = 0; i < this.state.notes.length; ++i) {
-      if (this.state.notes[i].id == item.id) {
+      const noteObj = this.state.notes[i];
+      if (noteObj.id == item.id) {
+        // Splice out the note item
         notes = [
           ...this.state.notes.slice(0, i),
           ...this.state.notes.slice(i + 1)
         ];
+
+        // Cancel all of the notifications this notecard had
+        (noteObj.questions).forEach(questionObj => {
+          const notifId = ((noteObj.id).toString()).concat((questionObj.id).toString());
+          PushNotification.cancelLocalNotification(notifId);
+        });
+
         break;
       }
     }
-
     if (notes == null) {
       console.log('err trying to delete notecard');
       return;
