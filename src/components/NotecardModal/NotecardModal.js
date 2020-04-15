@@ -14,8 +14,11 @@ import {
 import { containers, buttons, inputs, text } from './Styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Question from '../Question/Question';
-import { Storage } from '../../services/Storage';
 import Loader from '../Loader/Loader';
+import Confirmer from '../Confirmer/Confirmer';
+import { Storage } from '../../services/Storage';
+import { PushNotification } from '../../services/PushNotification';
+import { search } from '../../helpers/BinarySearch';
 
 const WEB_SCRAPER_API_URL = 'https://czx2q94gxb.execute-api.us-west-1.amazonaws.com/dev/autopopcontent';
 const QUESTION_GENERATOR_API_URL = 'https://rocky-caverns-51964.herokuapp.com/genquest';
@@ -31,30 +34,46 @@ const DismissKeyboard = ({ children }) => (
 const TabIcon = ({ showingQuestions }) => {
   if (showingQuestions) {
     return <Icon name="pencil" size={35} color='#fffdf9' style={{ marginTop: 5 }} />;
+  } else {
+    return <Icon name="question" size={35} color='#fffdf9' style={{ marginTop: 5 }} />;
   }
-  return <Icon name="question" size={35} color='#fffdf9' style={{ marginTop: 5 }} />;
+};
+
+const NotifIcon = ({ notifications }) => {
+  if (notifications) {
+    return <Icon name='bell' size={20} />;
+  } else {
+    return <Icon name='bell-slash' size={20} />;
+  }
 };
 
 export default class NotecardModal extends Component {
   state = {
     isLoading: false,
-    noteItem: null,
+    noteObj: null,
     showingQuestions: false,
     showingAddQuestionButton: true,
     topicInput: '',
     notesInput: '',
     questions: [],
+    notifications: true,
+    hasChanges: false,
+    needsConfirmation: false,
   };
+  validChanges = new Set(["topicInput", "notesInput", "questions", "notifications"]);
 
   resetNotecard = () => {
     this.setState({
       isLoading: false,
-      noteItem: null,
+      noteObj: null,
       showingQuestions: false,
       showingAddQuestionButton: true,
       topicInput: '',
       notesInput: '',
       questions: [],
+      notifications: true,
+      hasChanges: false,
+      needsConfirmation: false,
     });
   };
 
@@ -66,19 +85,40 @@ export default class NotecardModal extends Component {
       this.resetNotecard();
     } else {
       this.setState({
-        noteItem: item,
+        noteObj: item,
         topicInput: item.topic,
         notesInput: item.notes,
         showingQuestions: false,
         questions: item.questions,
+        notifications: item.notifications,
       });
+    }
+  };
+
+  // Called within confirmer to handle unsaved changes
+  onConfirmation = async (decision) => {
+    this.setState({
+      needsConfirmation: false,
+    });
+    if (decision === "discard") {
+      this.setState({
+        hasChanges: false,
+      });
+      this.props.onClose && this.props.onClose();
+    } else if (decision === "save") {
+      await this.onSave();
     }
   };
 
   // Close the modal in parent component
   onClose = () => {
-    // TODO: modal asking 'Are you sure? Unsaved changes will be lost!'
-    this.props.onClose && this.props.onClose();
+    if (this.state.hasChanges) {
+      this.setState({
+        needsConfirmation: true,
+      });
+    } else {
+      this.props.onClose && this.props.onClose();
+    }
   };
 
   // Handles display of questions
@@ -102,13 +142,14 @@ export default class NotecardModal extends Component {
     const topic = this.state.topicInput.length > 0 ? this.state.topicInput : 'Untitled';
 
     // overwrite notecard
-    if (this.state.noteItem) {
-      const index = existingNotes.findIndex((note) => note.id == this.state.noteItem.id);
+    if (this.state.noteObj) {
+      const index = existingNotes.findIndex((note) => note.id == this.state.noteObj.id);
       existingNotes[index] = {
         id: index,
         topic: topic,
         notes: this.state.notesInput,
         questions: this.state.questions,
+        notifications: this.state.notifications,
       }
     } else {
       // add new notecard
@@ -119,11 +160,15 @@ export default class NotecardModal extends Component {
         topic: topic,
         notes: this.state.notesInput,
         questions: this.state.questions,
+        notifications: this.state.notifications,
       });
     }
 
     // write to storage
     await Storage.addNotes(existingNotes);
+    
+    // persist notification setting
+    this._toggleNotifications();
 
     // reset modal
     this.resetNotecard();
@@ -181,12 +226,16 @@ export default class NotecardModal extends Component {
       });
 
       const { questions } = res.data;
-
       if (questions.length < 1) {
         Alert.alert('Sorry!', 'Could not generate questions for this notecard');
       } else {
+        var lastId = this.state.questions[this.state.questions.length - 1].id;
+        const newQuestions = questions.map(question => ({
+          id: ++lastId,
+          question: question,
+        }));
         this.setState({
-          questions: this.state.questions.concat(res.data.questions),    // add to existing questions
+          questions: this.state.questions.concat(newQuestions),    // add to existing questions
         });
       }
     } catch (err) {
@@ -212,19 +261,14 @@ export default class NotecardModal extends Component {
 
   // Overwrite an existing questions content
   saveQuestion = (id, newQuestion) => {
-    var questions = null;
-    for (var i = 0; i < this.state.questions.length; ++i) {
-      if (this.state.questions[i].id == id) {
-        questions = [...this.state.questions];
-        questions[i].question = newQuestion;
-        break;
-      }
-    }
-
-    if (questions == null) {
+    const index = search(id, this.state.questions, "id");
+    if (index == -1) {
       console.log('Error occurred while trying to save question.');
       return;
     }
+
+    const questions = [...this.state.questions];
+    questions[index].question = newQuestion;
 
     this.setState({
       questions: questions,
@@ -233,24 +277,50 @@ export default class NotecardModal extends Component {
 
   // Removes a question
   deleteQuestion = (id) => {
-    var questions = null;
-    for (var i = 0; i < this.state.questions.length; ++i) {
-      if (this.state.questions[i].id == id) {
-        var questions = [
-          ...this.state.questions.slice(0, i),
-          ...this.state.questions.slice(i + 1)
-        ];
-        break;
-      }
-    }
-
-    if (questions == null) {
+    const index = search(id, this.state.questions, "id");
+    if (index == -1) {
       console.log('Error occurred: could not find question to delete');
       return;
     }
 
+    const questions = [
+      ...this.state.questions.slice(0, index),
+      ...this.state.questions.slice(index + 1)
+    ];
+
+    // Remove the notification associated with the question
+    const notifId = (this.state.noteObj.id.toString()).concat((id).toString());
+    PushNotification.cancelLocalNotification(notifId);
+
     this.setState({
       questions: questions,
+    });
+  };
+
+  // Schedules or cancels notifications depending on toggle value (called on-save)
+  _toggleNotifications = () => {
+    const { notifications, noteObj } = this.state;
+    var fn = null;
+    if (notifications) {
+      fn = PushNotification.localNotificationSchedule;
+    } else {
+      fn = PushNotification.cancelLocalNotification;
+    }
+
+    const { topic, id } = noteObj;
+
+    this.state.questions.forEach(questionObj => {
+      const notifId = (id.toString()).concat((questionObj.id).toString());
+      const { question } = questionObj;
+      fn(notifId, topic, question);
+    });
+  };
+
+  // Toggles notification setting
+  toggleNotifications = () => {
+    const { notifications } = this.state;
+    this.setState({
+      notifications: !notifications,
     });
   };
 
@@ -267,6 +337,19 @@ export default class NotecardModal extends Component {
     });
   }
 
+  // Checks when the notecard updates, if any changes to topic input, notes input, questions, or notifications settings occurred.
+  // If so, then we set the state of having changes to be true so we can notify the user.
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.noteObj && this.state.noteObj && prevState.noteObj.id === this.state.noteObj.id) {
+      const difference = Object.keys(prevState).filter(k => prevState[k] !== this.state[k] && this.validChanges.has(k));
+      if (difference.length && !this.state.hasChanges) {
+        this.setState({
+          hasChanges: true,
+        });
+      }
+    }
+  };
+
   componentDidMount() {
     this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
@@ -282,7 +365,17 @@ export default class NotecardModal extends Component {
       return null;
     }
 
-    const { isLoading, loadingState, showingQuestions, showingAddQuestionButton, topicInput, notesInput, questions } = this.state;
+    const { 
+      isLoading, 
+      loadingState, 
+      showingQuestions, 
+      showingAddQuestionButton, 
+      topicInput, 
+      notesInput, 
+      questions,
+      notifications,
+      needsConfirmation,
+    } = this.state;
 
     return (
       <Modal
@@ -293,6 +386,10 @@ export default class NotecardModal extends Component {
             <Loader
               loading={isLoading}
               loadText={loadingState}
+            />
+            <Confirmer
+              confirming={needsConfirmation}
+              confirmation={this.onConfirmation}
             />
             <View style={containers.menu}>
               <TouchableOpacity
@@ -346,7 +443,7 @@ export default class NotecardModal extends Component {
                           delete={this.deleteQuestion}
                         />
                       }
-                      keyExtractor={item => item.id}
+                      keyExtractor={item => (item.id).toString()}
                       stickyHeaderIndices={[0]}
                       ListHeaderComponent={() =>
                         <View style={containers.questionsHeader}>
@@ -358,9 +455,10 @@ export default class NotecardModal extends Component {
                                 <Icon name='question-circle' size={25} />
                               </View>
                             </TouchableOpacity>
-                            <TouchableOpacity>
+                            <TouchableOpacity
+                              onPress={this.toggleNotifications}>
                               <View style={buttons.notifButton}>
-                                <Icon name='bell' size={20} />
+                                <NotifIcon notifications={notifications} />
                               </View>
                             </TouchableOpacity>
                           </View>
