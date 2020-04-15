@@ -12,6 +12,7 @@ import NotecardModal from './components/NotecardModal/NotecardModal';
 import { Storage } from './services/Storage';
 import { containers, buttons, text } from './MainStyles';
 import { PushNotification } from './services/PushNotification';
+import { search } from './helpers/BinarySearch';
 const NOTECARD_DESC_LIMIT = 75;
 
 let DATA = [
@@ -106,29 +107,24 @@ export default class Main extends Component {
   };
 
   deleteNote = async (item) => {
-    var notes = null;
-    for (var i = 0; i < this.state.notes.length; ++i) {
-      const noteObj = this.state.notes[i];
-      if (noteObj.id == item.id) {
-        // Splice out the note item
-        notes = [
-          ...this.state.notes.slice(0, i),
-          ...this.state.notes.slice(i + 1)
-        ];
-
-        // Cancel all of the notifications this notecard had
-        (noteObj.questions).forEach(questionObj => {
-          const notifId = ((noteObj.id).toString()).concat((questionObj.id).toString());
-          PushNotification.cancelLocalNotification(notifId);
-        });
-
-        break;
-      }
-    }
-    if (notes == null) {
+    const index = search(item.id, this.state.notes, "id");
+    if (index == -1) {
       console.log('err trying to delete notecard');
       return;
     }
+
+    // Splice out the note item
+    const notes = [
+      ...this.state.notes.slice(0, index),
+      ...this.state.notes.slice(index + 1)
+    ];
+
+    const noteObj = this.state.notes[index];
+    // Cancel all of the notifications this notecard had
+    (noteObj.questions).forEach(questionObj => {
+      const notifId = ((noteObj.id).toString()).concat((questionObj.id).toString());
+      PushNotification.cancelLocalNotification(notifId);
+    });
 
     await Storage.addNotes(notes);
     this.loadNotes();
