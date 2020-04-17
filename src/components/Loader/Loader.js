@@ -22,7 +22,7 @@ const Loader = props => {
       visible={loading}>
       <View style={containers.modalBackground}>
         <View style={containers.activityIndicatorWrapper}>
-          <Text style={text.loadText}>{loadText}</Text>
+          <Text style={text.load}>{loadText}</Text>
           <ActivityIndicator
             animating={loading} />
         </View>

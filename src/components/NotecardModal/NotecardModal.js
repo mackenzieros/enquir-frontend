@@ -182,7 +182,7 @@ export default class NotecardModal extends Component {
   autoPop = async () => {
     const { topicInput, notesInput } = this.state;
     if (topicInput.length < 1) {
-      Alert.alert('To use the auto notecard maker, a topic must be provided');
+      Alert.alert('Uh oh!', 'To use the auto notecard maker, a topic must be provided');
       return;
     }
 
@@ -218,6 +218,11 @@ export default class NotecardModal extends Component {
   // Generate questions given content
   generateQuestions = async () => {
     try {
+      if (this.state.notesInput.length < 1) {
+        Alert.alert('Whoops!', 'To generate questions, please write some notes.');
+        return;
+      }
+
       this.setState({
         isLoading: true,    // show loader while request is performing
         loadingState: 'Creating questions...',
@@ -227,9 +232,13 @@ export default class NotecardModal extends Component {
         blurb: this.state.notesInput,
       });
 
+      if (res.status !== 201) {
+        throw Error;
+      }
+
       const { questions } = res.data;
       if (questions.length < 1) {
-        Alert.alert('Sorry!', 'Could not generate questions for this notecard');
+        Alert.alert('Sorry!', 'We were unable to create questions from your notes.');
       } else {
         var lastId = this.state.questions.length ? this.state.questions[this.state.questions.length - 1].id : -1;
         const newQuestions = questions.map(question => ({
@@ -242,7 +251,7 @@ export default class NotecardModal extends Component {
       }
     } catch (err) {
       console.log('Err occurred communicating with question generator: ', err);
-      Alert.alert('ERROR', 'Unable to generate questions');
+      Alert.alert('Whoops!', 'We\'re having trouble connecting to the our servers.');
     }
     this.setState({
       isLoading: false,
