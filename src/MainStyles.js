@@ -1,25 +1,17 @@
 import { StyleSheet } from 'react-native';
-const colors = {
-    "secondary": '#0686E4',
-    "tertiary": '#ffffff',
-    "background_dark": '#F0F0F0',
-    "text_light": '#ffffff',
-    "text_medium": '#464646',
-    "text_dark": '#263238',
-    "weather_text_color": '#464646',
-    "transparent_white": '#FFFFFF00',
-    "separator_background": '#E2E2E2',
-};
 
 const containers = StyleSheet.create({
     wrapper: {
         flex: 1,
-        backgroundColor: '#F5FCFF',
+        backgroundColor: '#f2eee9',
     },
     menu: {
         flexDirection: 'row',
         height: 45,
-        backgroundColor: 'blue',
+        backgroundColor: '#3056ff',
+        elevation: 3,
+        borderBottomColor: 'grey',
+        borderBottomWidth: .5,
     },
     content: {
         flex: 1,
@@ -38,7 +30,7 @@ const containers = StyleSheet.create({
         marginBottom: 8,
         elevation: 1,
         borderRadius: 3,
-        backgroundColor: colors.tertiary,
+        backgroundColor: '#fcfcfc',
     },
     emptyBlock: {
         paddingVertical: 38,
@@ -67,7 +59,7 @@ const buttons = StyleSheet.create({
         width: 60,
         height: 60,
         borderRadius: 60/2,
-        backgroundColor: '#00BCD4',
+        backgroundColor: '#3056ff',
         bottom: 20,
         right: 30,
         alignSelf: 'flex-end',
@@ -78,11 +70,11 @@ const buttons = StyleSheet.create({
 });
 
 const text = StyleSheet.create({
-    topicText: {
+    topic: {
         fontFamily: 'Roboto-Medium',
         fontSize: 17,
     },
-    notesText: {
+    notes: {
         fontFamily: 'Roboto-Regular',
         fontSize: 16,
     },

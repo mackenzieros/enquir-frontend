@@ -74,13 +74,13 @@ const Notecard = ({ parent, item }) => {
       }}>
       <View style={containers.notecard}>
         <View style={containers.topicContainer}>
-          <Text style={text.topicText}>{item.topic}</Text>
+          <Text style={text.topic}>{item.topic}</Text>
           <TouchableOpacity onPress={() => { parent.deleteNote(item) }}>
             <Icon name='trash' size={15} />
           </TouchableOpacity>
         </View>
         <View tyle={containers.notesContainer}>
-          <Text style={text.notesText}>{ellipseSubstr(item.notes)}</Text>
+          <Text style={text.notes}>{ellipseSubstr(item.notes)}</Text>
         </View>
       </View>
     </TouchableNativeFeedback>
@@ -155,7 +155,9 @@ export default class Main extends Component {
 
     return (
       <SafeAreaView style={containers.wrapper}>
-        <View style={containers.menu} />
+        <View style={containers.menu}>
+          <Text style={text.title} />
+        </View>
         <View style={containers.content}>
           <FlatList
             data={notes}
@@ -178,7 +180,7 @@ export default class Main extends Component {
             this.loadModal(null)
             this.showModal();
           }}>
-          <Icon name='plus' size={30} style={{ marginLeft: 17.5, }} />
+          <Icon name='plus' size={30} style={{ marginLeft: 17.5, color: '#f0f0f0' }} />
         </TouchableOpacity>
       </SafeAreaView>
     );

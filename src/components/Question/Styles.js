@@ -12,7 +12,7 @@ const containers = StyleSheet.create({
     marginBottom: 8,
     elevation: 1,
     borderRadius: 3,
-    backgroundColor: 'grey',
+    backgroundColor: '#c3c4c9',
   },
   questionTextContainer: {
     flex: 12,
@@ -30,7 +30,7 @@ const text = StyleSheet.create({
   questionText: {
     flex: 1,
     flexWrap: 'wrap',
-    fontSize: 16,
+    fontSize: 18,
     fontFamily: 'Roboto-Regular',
   },
 });

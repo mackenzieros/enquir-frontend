@@ -41,9 +41,9 @@ const TabIcon = ({ showingQuestions }) => {
 
 const NotifIcon = ({ notifications }) => {
   if (notifications) {
-    return <Icon name='bell' size={20} />;
+    return <Icon name='bell' size={20} style={buttons.notifButton} />;
   } else {
-    return <Icon name='bell-slash' size={20} />;
+    return <Icon name='bell-slash' size={20} style={buttons.notifButton}/>;
   }
 };
 
@@ -63,6 +63,7 @@ export default class NotecardModal extends Component {
   validChanges = new Set(["topicInput", "notesInput", "questions", "notifications"]);
 
   resetNotecard = () => {
+    this.state.questions.length = 0;
     this.setState({
       isLoading: false,
       noteObj: null,
@@ -70,7 +71,7 @@ export default class NotecardModal extends Component {
       showingAddQuestionButton: true,
       topicInput: '',
       notesInput: '',
-      questions: [],
+      questions: this.state.questions,
       notifications: true,
       hasChanges: false,
       needsConfirmation: false,
@@ -104,6 +105,7 @@ export default class NotecardModal extends Component {
       this.setState({
         hasChanges: false,
       });
+      this.resetNotecard();
       this.props.onClose && this.props.onClose();
     } else if (decision === "save") {
       await this.onSave();
@@ -140,12 +142,12 @@ export default class NotecardModal extends Component {
 
     // default topic name
     const topic = this.state.topicInput.length > 0 ? this.state.topicInput : 'Untitled';
-
+    var id = -1;
     // overwrite notecard
     if (this.state.noteObj) {
-      const index = existingNotes.findIndex((note) => note.id == this.state.noteObj.id);
-      existingNotes[index] = {
-        id: index,
+      id = existingNotes.findIndex((note) => note.id == this.state.noteObj.id);
+      existingNotes[id] = {
+        id: id,
         topic: topic,
         notes: this.state.notesInput,
         questions: this.state.questions,
@@ -153,10 +155,10 @@ export default class NotecardModal extends Component {
       }
     } else {
       // add new notecard
-      const newIndex = existingNotes.length == 0 ? 0 : existingNotes[existingNotes.length - 1].id + 1;
+      id = existingNotes.length == 0 ? 0 : existingNotes[existingNotes.length - 1].id + 1;
 
       existingNotes.push({
-        id: newIndex,
+        id: id,
         topic: topic,
         notes: this.state.notesInput,
         questions: this.state.questions,
@@ -168,7 +170,7 @@ export default class NotecardModal extends Component {
     await Storage.addNotes(existingNotes);
     
     // persist notification setting
-    this._toggleNotifications();
+    this._toggleNotifications(id);
 
     // reset modal
     this.resetNotecard();
@@ -229,7 +231,7 @@ export default class NotecardModal extends Component {
       if (questions.length < 1) {
         Alert.alert('Sorry!', 'Could not generate questions for this notecard');
       } else {
-        var lastId = this.state.questions[this.state.questions.length - 1].id;
+        var lastId = this.state.questions.length ? this.state.questions[this.state.questions.length - 1].id : -1;
         const newQuestions = questions.map(question => ({
           id: ++lastId,
           question: question,
@@ -298,8 +300,8 @@ export default class NotecardModal extends Component {
   };
 
   // Schedules or cancels notifications depending on toggle value (called on-save)
-  _toggleNotifications = () => {
-    const { notifications, noteObj } = this.state;
+  _toggleNotifications = (id) => {
+    const { notifications, topicInput } = this.state;
     var fn = null;
     if (notifications) {
       fn = PushNotification.localNotificationSchedule;
@@ -307,12 +309,10 @@ export default class NotecardModal extends Component {
       fn = PushNotification.cancelLocalNotification;
     }
 
-    const { topic, id } = noteObj;
-
     this.state.questions.forEach(questionObj => {
       const notifId = (id.toString()).concat((questionObj.id).toString());
       const { question } = questionObj;
-      fn(notifId, topic, question);
+      fn(notifId, topicInput, question);
     });
   };
 
@@ -339,8 +339,9 @@ export default class NotecardModal extends Component {
 
   // Checks when the notecard updates, if any changes to topic input, notes input, questions, or notifications settings occurred.
   // If so, then we set the state of having changes to be true so we can notify the user.
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.noteObj && this.state.noteObj && prevState.noteObj.id === this.state.noteObj.id) {
+  componentDidUpdate(prevProps, prevState) {        // the following are state changes describing a valid update
+    if ((!prevState.noteObj && !this.state.noteObj)  // case 1: update on empty card
+     || ((prevState.noteObj && this.state.noteObj) && (prevState.noteObj.id === this.state.noteObj.id))) {  // case 2: update on existing card
       const difference = Object.keys(prevState).filter(k => prevState[k] !== this.state[k] && this.validChanges.has(k));
       if (difference.length && !this.state.hasChanges) {
         this.setState({
@@ -451,13 +452,13 @@ export default class NotecardModal extends Component {
                           <View style={buttons.questionHeaderButtons}>
                             <TouchableOpacity
                               onPress={this.generateQuestions} >
-                              <View style={buttons.questionGenButton}>
-                                <Icon name='question-circle' size={25} />
+                              <View style={containers.questionGenButtonContainer}>
+                                <Icon name='question-circle' size={28} color={'white'} />
                               </View>
                             </TouchableOpacity>
                             <TouchableOpacity
                               onPress={this.toggleNotifications}>
-                              <View style={buttons.notifButton}>
+                              <View style={containers.notifButtonContainer}>
                                 <NotifIcon notifications={notifications} />
                               </View>
                             </TouchableOpacity>
@@ -472,7 +473,7 @@ export default class NotecardModal extends Component {
                       <TouchableOpacity
                         style={buttons.addQuestionButton}
                         onPress={this.addQuestion} >
-                        <Icon name='plus' size={30} style={{ marginLeft: 16, }} />
+                        <Icon name='plus' size={30} style={{ marginLeft: 16, color: 'white', }} />
                       </TouchableOpacity>
                     }
                   </View>

@@ -5,7 +5,8 @@ const containers = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 5,
+    paddingBottom: 5,
+    backgroundColor: '#fcfcfc',
   },
   closeContainer: {
     flexDirection: 'row',
@@ -13,7 +14,7 @@ const containers = StyleSheet.create({
     width: 65,
     height: 30,
     marginTop: 5,
-    backgroundColor: 'white',
+    backgroundColor: '#fcfcfc',
   },
   saveContainer: {
     flexDirection: 'row',
@@ -21,6 +22,7 @@ const containers = StyleSheet.create({
   },
   content: {
     flex: 1,
+    backgroundColor: '#fcfcfc',
   },
   topicContainer: {
     flexDirection: 'row',
@@ -31,7 +33,8 @@ const containers = StyleSheet.create({
   tabContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginRight: 20,
+    marginRight: 19,
+    elevation: 10,
   },
   notesContainer: {
     flex: 2,
@@ -47,7 +50,7 @@ const containers = StyleSheet.create({
     justifyContent: 'space-between',
     padding: 15,
     elevation: 5,
-    backgroundColor: '#d1d1d1',
+    backgroundColor: '#35477d',
   },
   emptyBlock: {
     paddingVertical: 36,
@@ -55,6 +58,14 @@ const containers = StyleSheet.create({
     paddingRight: 16,
     marginTop: 0,
     marginBottom: 8,
+  },
+  questionGenButtonContainer: {
+  },
+  notifButtonContainer: {
+    marginTop: 5,
+    marginLeft: 19,
+    marginRight: 7,
+    color: 'white',
   },
 });
 
@@ -86,21 +97,20 @@ const buttons = StyleSheet.create({
     width: 40,
     borderRadius: 40,
     backgroundColor: '#8ac6d1',
+    elevation: 4,
   },
   questionHeaderButtons: {
     flexDirection: 'row',
     justifyContent: 'flex-end'
   },
-  questionGenButton: {},
   notifButton: {
-    marginTop: 2.5,
-    marginLeft: 15,
+    color: 'white',
   },
   addQuestionButton: {
     width: 55,
     height: 55,
     borderRadius: 55 / 2,
-    backgroundColor: '#00BCD4',
+    backgroundColor: '#35477d',
     position: 'absolute',
     bottom: 20,
     right: 20,
@@ -115,13 +125,13 @@ const inputs = StyleSheet.create({
     flex: 1,
     borderColor: "#ccc",
     margin: 10,
-    fontSize: 19,
+    fontSize: 21,
     fontFamily: 'Roboto-Medium',
   },
   notesInput: {
     flex: 1,
     margin: 10,
-    fontSize: 18,
+    fontSize: 20,
     fontFamily: 'Roboto-Regular',
   },
 });
@@ -137,6 +147,7 @@ const text = StyleSheet.create({
     justifyContent: 'flex-start',
     fontSize: 22,
     fontFamily: 'Roboto-Medium',
+    color: 'white',
   },
 });
 
