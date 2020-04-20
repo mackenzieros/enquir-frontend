@@ -43,7 +43,7 @@ const NotifIcon = ({ notifications }) => {
   if (notifications) {
     return <Icon name='bell' size={20} style={buttons.notifButton} />;
   } else {
-    return <Icon name='bell-slash' size={20} style={buttons.notifButton}/>;
+    return <Icon name='bell-slash' size={20} style={buttons.notifButton} />;
   }
 };
 
@@ -56,6 +56,7 @@ export default class NotecardModal extends Component {
     topicInput: '',
     notesInput: '',
     questions: [],
+    notificationsPrev: false, // used for scheduling notifications on state change only; to avoid scheduling notifs on every save
     notifications: true,
     hasChanges: false,
     needsConfirmation: false,
@@ -72,6 +73,7 @@ export default class NotecardModal extends Component {
       topicInput: '',
       notesInput: '',
       questions: this.state.questions,
+      notificationsPrev: false,
       notifications: true,
       hasChanges: false,
       needsConfirmation: false,
@@ -91,6 +93,7 @@ export default class NotecardModal extends Component {
         notesInput: item.notes,
         showingQuestions: false,
         questions: item.questions,
+        notificationsPrev: item.notifications,
         notifications: item.notifications,
       });
     }
@@ -168,7 +171,7 @@ export default class NotecardModal extends Component {
 
     // write to storage
     await Storage.addNotes(existingNotes);
-    
+
     // persist notification setting
     this._toggleNotifications(id);
 
@@ -196,7 +199,7 @@ export default class NotecardModal extends Component {
         query: this.state.topicInput,
       });
 
-      if (res.status !== 200) {
+      if (res.status !== 200 && res.status !== 201) {
         throw Error;
       }
 
@@ -310,7 +313,11 @@ export default class NotecardModal extends Component {
 
   // Schedules or cancels notifications depending on toggle value (called on-save)
   _toggleNotifications = (id) => {
-    const { notifications, topicInput } = this.state;
+    const { notificationsPrev, notifications, topicInput } = this.state;
+    if (notificationsPrev === notifications) {
+      return;
+    }
+
     var fn = null;
     if (notifications) {
       fn = PushNotification.localNotificationSchedule;
@@ -350,7 +357,7 @@ export default class NotecardModal extends Component {
   // If so, then we set the state of having changes to be true so we can notify the user.
   componentDidUpdate(prevProps, prevState) {        // the following are state changes describing a valid update
     if ((!prevState.noteObj && !this.state.noteObj)  // case 1: update on empty card
-     || ((prevState.noteObj && this.state.noteObj) && (prevState.noteObj.id === this.state.noteObj.id))) {  // case 2: update on existing card
+      || ((prevState.noteObj && this.state.noteObj) && (prevState.noteObj.id === this.state.noteObj.id))) {  // case 2: update on existing card
       const difference = Object.keys(prevState).filter(k => prevState[k] !== this.state[k] && this.validChanges.has(k));
       if (difference.length && !this.state.hasChanges) {
         this.setState({
@@ -375,13 +382,13 @@ export default class NotecardModal extends Component {
       return null;
     }
 
-    const { 
-      isLoading, 
-      loadingState, 
-      showingQuestions, 
-      showingAddQuestionButton, 
-      topicInput, 
-      notesInput, 
+    const {
+      isLoading,
+      loadingState,
+      showingQuestions,
+      showingAddQuestionButton,
+      topicInput,
+      notesInput,
       questions,
       notifications,
       needsConfirmation,

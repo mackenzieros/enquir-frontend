@@ -69,7 +69,7 @@ const Notecard = ({ parent, item }) => {
   return (
     <TouchableNativeFeedback
       onPress={() => {
-        parent.loadModal(item)
+        parent.loadModal(item);
         parent.showModal();
       }}>
       <View style={containers.notecard}>
