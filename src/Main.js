@@ -15,45 +15,6 @@ import { PushNotification } from './services/PushNotification';
 import { search } from './helpers/BinarySearch';
 const NOTECARD_DESC_LIMIT = 75;
 
-let DATA = [
-  {
-    id: 0,
-    topic: 'First Item',
-    notes: 'first blurb blah blah blah',
-    questions: [{
-      id: 0,
-      question: 'What is this?'
-    }],
-    notifications: true,
-  },
-  {
-    id: 1,
-    topic: 'Second Item',
-    notes: 'second blurb blah blah blah',
-    questions: [{
-      id: 0,
-      question: 'What is this?'
-    }],
-    notifications: true,
-  },
-  {
-    id: 2,
-    topic: 'Marine biology',
-    notes: 'Marine biology is the study of marine organisms, their behaviors and interactions with the environment. Marine biologists study biological oceanography and the associated fields of chemical, physical, and geological oceanography to understand marine organisms.',
-    questions: [
-      {
-        id: 0,
-        question: 'What is marine biology?'
-      },
-      {
-        id: 1,
-        question: 'What do marine biologists study?',
-      }
-    ],
-    notifications: true,
-  },
-];
-
 // Used to paraphrase notes for display
 const ellipseSubstr = (str) => {
   if (str.length <= NOTECARD_DESC_LIMIT) {
@@ -146,7 +107,6 @@ export default class Main extends Component {
 
   // Load notes data from storage
   componentDidMount() {
-    Storage.addNotes(DATA).then();  // TODO: FOR TESTING
     this.loadNotes();
   }
 
@@ -159,6 +119,9 @@ export default class Main extends Component {
           <Text style={text.title} />
         </View>
         <View style={containers.content}>
+          {(notes == undefined || notes.length < 1) &&
+            <Text style={text.nonotes}>No notes yet...</Text>
+          }
           <FlatList
             data={notes}
             renderItem={({ item }) => <Notecard parent={this} item={item} />}

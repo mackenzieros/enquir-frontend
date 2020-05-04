@@ -6,7 +6,6 @@ const retrieveNotes = async () => {
     if (notes !== null) {
       return JSON.parse(notes);
     }
-    console.log('Err: no notes found');
   } catch (err) {
     console.log('Err fetching data ', err)
   }

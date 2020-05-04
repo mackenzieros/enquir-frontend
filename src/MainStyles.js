@@ -70,6 +70,14 @@ const buttons = StyleSheet.create({
 });
 
 const text = StyleSheet.create({
+    nonotes: {
+        top: 20,
+        left: 20,
+        position: 'absolute',
+        color: 'grey',
+        fontFamily: 'Roboto-Medium',
+        fontSize: 30,
+    },
     topic: {
         fontFamily: 'Roboto-Medium',
         fontSize: 17,

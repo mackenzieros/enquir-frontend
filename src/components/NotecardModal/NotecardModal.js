@@ -141,7 +141,7 @@ export default class NotecardModal extends Component {
     });
 
     // get existing notes
-    const existingNotes = await Storage.retrieveNotes();
+    var existingNotes = await Storage.retrieveNotes();
 
     // default topic name
     const topic = this.state.topicInput.length > 0 ? this.state.topicInput : 'Untitled';
@@ -158,7 +158,12 @@ export default class NotecardModal extends Component {
       }
     } else {
       // add new notecard
-      id = existingNotes.length == 0 ? 0 : existingNotes[existingNotes.length - 1].id + 1;
+      if (!existingNotes || !existingNotes.length) {
+        existingNotes = [];
+        id = 0;
+      } else {
+        id = existingNotes[existingNotes.length - 1].id + 1;
+      }
 
       existingNotes.push({
         id: id,
@@ -200,6 +205,10 @@ export default class NotecardModal extends Component {
       });
 
       if (res.status !== 200 && res.status !== 201) {
+        throw Error;
+      }
+
+      if (!res.data || !res.data.blurb) {
         throw Error;
       }
 
