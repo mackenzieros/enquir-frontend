@@ -443,16 +443,14 @@ export default class NotecardModal extends Component {
               </View>
               <View style={containers.tabContainer}>
                 <TouchableOpacity
-                  onPress={this.autoPop} >
-                  <View style={buttons.autoPopButtonContainer}>
+                  onPress={this.autoPop}
+                  style={buttons.autoPopButtonContainer} >
                     <Icon name='magic' size={30} color='#fffdf9' style={{ marginTop: 5.5 }} />
-                  </View>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  onPress={this.showQuestions} >
-                  <View style={buttons.questionTab}>
+                  onPress={this.showQuestions}
+                  style={buttons.questionTab} >
                     <TabIcon showingQuestions={showingQuestions} />
-                  </View>
                 </TouchableOpacity>
               </View>
               <View style={containers.notesContainer}>
