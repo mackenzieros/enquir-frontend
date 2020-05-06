@@ -1,0 +1,166 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders a Confirmer using Snapshots 1`] = `
+<Modal
+  animationType="none"
+  hardwareAccelerated={false}
+  transparent={true}
+  visible={false}
+>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "#00000040",
+        "flex": 1,
+        "flexDirection": "column",
+        "justifyContent": "space-around",
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "backgroundColor": "#FFFFFF",
+          "borderColor": "grey",
+          "borderRadius": 8,
+          "borderWidth": 0.5,
+          "display": "flex",
+          "height": 140,
+          "justifyContent": "center",
+          "width": 260,
+        }
+      }
+    >
+      <Text
+        style={
+          Object {
+            "fontFamily": "Roboto-Medium",
+            "fontSize": 17,
+            "marginBottom": 20,
+            "marginHorizontal": 12,
+            "textAlign": "center",
+          }
+        }
+      >
+        You have unsaved changes.
+      </Text>
+      <View
+        style={
+          Object {
+            "alignSelf": "center",
+            "bottom": 0,
+            "flexDirection": "row",
+            "position": "absolute",
+          }
+        }
+      >
+        <View
+          accessible={true}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "borderBottomLeftRadius": 8,
+              "borderColor": "grey",
+              "borderTopWidth": 0.75,
+              "flex": 1,
+              "opacity": 1,
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "grey",
+                "fontFamily": "Roboto-Medium",
+                "fontSize": 18,
+                "marginTop": 5,
+                "textAlign": "center",
+              }
+            }
+          >
+            Cancel
+          </Text>
+        </View>
+        <View
+          accessible={true}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "borderColor": "grey",
+              "borderLeftWidth": 0.65,
+              "borderRightWidth": 0.65,
+              "borderTopWidth": 0.75,
+              "flex": 1,
+              "height": 40,
+              "opacity": 1,
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "red",
+                "fontFamily": "Roboto-Medium",
+                "fontSize": 18,
+                "marginTop": 5,
+                "textAlign": "center",
+              }
+            }
+          >
+            Discard
+          </Text>
+        </View>
+        <View
+          accessible={true}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "borderBottomRightRadius": 8,
+              "borderColor": "grey",
+              "borderTopWidth": 0.75,
+              "flex": 1,
+              "opacity": 1,
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "blue",
+                "fontFamily": "Roboto-Medium",
+                "fontSize": 18,
+                "marginTop": 5,
+                "textAlign": "center",
+              }
+            }
+          >
+            Save
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+</Modal>
+`;

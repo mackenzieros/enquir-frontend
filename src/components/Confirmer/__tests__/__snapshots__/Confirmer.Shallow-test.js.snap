@@ -1,0 +1,1141 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders a Confirmer using Enzyme 1 1`] = `
+<Confirmer
+  confirmation={[MockFunction]}
+  confirming={true}
+>
+  <Component
+    animationType="none"
+    hardwareAccelerated={false}
+    transparent={true}
+    visible={true}
+  >
+    <Modal
+      animationType="none"
+      hardwareAccelerated={false}
+      transparent={true}
+      visible={true}
+    >
+      <View
+        style={
+          Object {
+            "alignItems": "center",
+            "backgroundColor": "#00000040",
+            "flex": 1,
+            "flexDirection": "column",
+            "justifyContent": "space-around",
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "#00000040",
+              "flex": 1,
+              "flexDirection": "column",
+              "justifyContent": "space-around",
+            }
+          }
+        >
+          <View
+            style={
+              Object {
+                "backgroundColor": "#FFFFFF",
+                "borderColor": "grey",
+                "borderRadius": 8,
+                "borderWidth": 0.5,
+                "display": "flex",
+                "height": 140,
+                "justifyContent": "center",
+                "width": 260,
+              }
+            }
+          >
+            <View
+              style={
+                Object {
+                  "backgroundColor": "#FFFFFF",
+                  "borderColor": "grey",
+                  "borderRadius": 8,
+                  "borderWidth": 0.5,
+                  "display": "flex",
+                  "height": 140,
+                  "justifyContent": "center",
+                  "width": 260,
+                }
+              }
+            >
+              <Text
+                style={
+                  Object {
+                    "fontFamily": "Roboto-Medium",
+                    "fontSize": 17,
+                    "marginBottom": 20,
+                    "marginHorizontal": 12,
+                    "textAlign": "center",
+                  }
+                }
+              >
+                <Text
+                  style={
+                    Object {
+                      "fontFamily": "Roboto-Medium",
+                      "fontSize": 17,
+                      "marginBottom": 20,
+                      "marginHorizontal": 12,
+                      "textAlign": "center",
+                    }
+                  }
+                >
+                  You have unsaved changes.
+                </Text>
+              </Text>
+              <View
+                style={
+                  Object {
+                    "alignSelf": "center",
+                    "bottom": 0,
+                    "flexDirection": "row",
+                    "position": "absolute",
+                  }
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "alignSelf": "center",
+                      "bottom": 0,
+                      "flexDirection": "row",
+                      "position": "absolute",
+                    }
+                  }
+                >
+                  <ForwardRef
+                    onPress={[Function]}
+                    style={
+                      Object {
+                        "borderBottomLeftRadius": 8,
+                        "borderColor": "grey",
+                        "borderTopWidth": 0.75,
+                        "flex": 1,
+                      }
+                    }
+                  >
+                    <TouchableOpacity
+                      hostRef={null}
+                      onPress={[Function]}
+                      style={
+                        Object {
+                          "borderBottomLeftRadius": 8,
+                          "borderColor": "grey",
+                          "borderTopWidth": 0.75,
+                          "flex": 1,
+                        }
+                      }
+                    >
+                      <ForwardRef(AnimatedComponentWrapper)
+                        accessible={true}
+                        focusable={true}
+                        onClick={[Function]}
+                        onResponderGrant={[Function]}
+                        onResponderMove={[Function]}
+                        onResponderRelease={[Function]}
+                        onResponderTerminate={[Function]}
+                        onResponderTerminationRequest={[Function]}
+                        onStartShouldSetResponder={[Function]}
+                        style={
+                          Array [
+                            Object {
+                              "borderBottomLeftRadius": 8,
+                              "borderColor": "grey",
+                              "borderTopWidth": 0.75,
+                              "flex": 1,
+                            },
+                            Object {
+                              "opacity": 1,
+                            },
+                          ]
+                        }
+                      >
+                        <AnimatedComponent
+                          accessible={true}
+                          focusable={true}
+                          onClick={[Function]}
+                          onResponderGrant={[Function]}
+                          onResponderMove={[Function]}
+                          onResponderRelease={[Function]}
+                          onResponderTerminate={[Function]}
+                          onResponderTerminationRequest={[Function]}
+                          onStartShouldSetResponder={[Function]}
+                          style={
+                            Array [
+                              Object {
+                                "borderBottomLeftRadius": 8,
+                                "borderColor": "grey",
+                                "borderTopWidth": 0.75,
+                                "flex": 1,
+                              },
+                              Object {
+                                "opacity": 1,
+                              },
+                            ]
+                          }
+                        >
+                          <View
+                            accessible={true}
+                            focusable={true}
+                            onClick={[Function]}
+                            onResponderGrant={[Function]}
+                            onResponderMove={[Function]}
+                            onResponderRelease={[Function]}
+                            onResponderTerminate={[Function]}
+                            onResponderTerminationRequest={[Function]}
+                            onStartShouldSetResponder={[Function]}
+                            style={
+                              Object {
+                                "borderBottomLeftRadius": 8,
+                                "borderColor": "grey",
+                                "borderTopWidth": 0.75,
+                                "flex": 1,
+                                "opacity": 1,
+                              }
+                            }
+                          >
+                            <View
+                              accessible={true}
+                              focusable={true}
+                              onClick={[Function]}
+                              onResponderGrant={[Function]}
+                              onResponderMove={[Function]}
+                              onResponderRelease={[Function]}
+                              onResponderTerminate={[Function]}
+                              onResponderTerminationRequest={[Function]}
+                              onStartShouldSetResponder={[Function]}
+                              style={
+                                Object {
+                                  "borderBottomLeftRadius": 8,
+                                  "borderColor": "grey",
+                                  "borderTopWidth": 0.75,
+                                  "flex": 1,
+                                  "opacity": 1,
+                                }
+                              }
+                            >
+                              <Text
+                                style={
+                                  Object {
+                                    "color": "grey",
+                                    "fontFamily": "Roboto-Medium",
+                                    "fontSize": 18,
+                                    "marginTop": 5,
+                                    "textAlign": "center",
+                                  }
+                                }
+                              >
+                                <Text
+                                  style={
+                                    Object {
+                                      "color": "grey",
+                                      "fontFamily": "Roboto-Medium",
+                                      "fontSize": 18,
+                                      "marginTop": 5,
+                                      "textAlign": "center",
+                                    }
+                                  }
+                                >
+                                  Cancel
+                                </Text>
+                              </Text>
+                              <PressabilityDebugView
+                                color="cyan"
+                              />
+                            </View>
+                          </View>
+                        </AnimatedComponent>
+                      </ForwardRef(AnimatedComponentWrapper)>
+                    </TouchableOpacity>
+                  </ForwardRef>
+                  <ForwardRef
+                    onPress={[Function]}
+                    style={
+                      Object {
+                        "borderColor": "grey",
+                        "borderLeftWidth": 0.65,
+                        "borderRightWidth": 0.65,
+                        "borderTopWidth": 0.75,
+                        "flex": 1,
+                        "height": 40,
+                      }
+                    }
+                  >
+                    <TouchableOpacity
+                      hostRef={null}
+                      onPress={[Function]}
+                      style={
+                        Object {
+                          "borderColor": "grey",
+                          "borderLeftWidth": 0.65,
+                          "borderRightWidth": 0.65,
+                          "borderTopWidth": 0.75,
+                          "flex": 1,
+                          "height": 40,
+                        }
+                      }
+                    >
+                      <ForwardRef(AnimatedComponentWrapper)
+                        accessible={true}
+                        focusable={true}
+                        onClick={[Function]}
+                        onResponderGrant={[Function]}
+                        onResponderMove={[Function]}
+                        onResponderRelease={[Function]}
+                        onResponderTerminate={[Function]}
+                        onResponderTerminationRequest={[Function]}
+                        onStartShouldSetResponder={[Function]}
+                        style={
+                          Array [
+                            Object {
+                              "borderColor": "grey",
+                              "borderLeftWidth": 0.65,
+                              "borderRightWidth": 0.65,
+                              "borderTopWidth": 0.75,
+                              "flex": 1,
+                              "height": 40,
+                            },
+                            Object {
+                              "opacity": 1,
+                            },
+                          ]
+                        }
+                      >
+                        <AnimatedComponent
+                          accessible={true}
+                          focusable={true}
+                          onClick={[Function]}
+                          onResponderGrant={[Function]}
+                          onResponderMove={[Function]}
+                          onResponderRelease={[Function]}
+                          onResponderTerminate={[Function]}
+                          onResponderTerminationRequest={[Function]}
+                          onStartShouldSetResponder={[Function]}
+                          style={
+                            Array [
+                              Object {
+                                "borderColor": "grey",
+                                "borderLeftWidth": 0.65,
+                                "borderRightWidth": 0.65,
+                                "borderTopWidth": 0.75,
+                                "flex": 1,
+                                "height": 40,
+                              },
+                              Object {
+                                "opacity": 1,
+                              },
+                            ]
+                          }
+                        >
+                          <View
+                            accessible={true}
+                            focusable={true}
+                            onClick={[Function]}
+                            onResponderGrant={[Function]}
+                            onResponderMove={[Function]}
+                            onResponderRelease={[Function]}
+                            onResponderTerminate={[Function]}
+                            onResponderTerminationRequest={[Function]}
+                            onStartShouldSetResponder={[Function]}
+                            style={
+                              Object {
+                                "borderColor": "grey",
+                                "borderLeftWidth": 0.65,
+                                "borderRightWidth": 0.65,
+                                "borderTopWidth": 0.75,
+                                "flex": 1,
+                                "height": 40,
+                                "opacity": 1,
+                              }
+                            }
+                          >
+                            <View
+                              accessible={true}
+                              focusable={true}
+                              onClick={[Function]}
+                              onResponderGrant={[Function]}
+                              onResponderMove={[Function]}
+                              onResponderRelease={[Function]}
+                              onResponderTerminate={[Function]}
+                              onResponderTerminationRequest={[Function]}
+                              onStartShouldSetResponder={[Function]}
+                              style={
+                                Object {
+                                  "borderColor": "grey",
+                                  "borderLeftWidth": 0.65,
+                                  "borderRightWidth": 0.65,
+                                  "borderTopWidth": 0.75,
+                                  "flex": 1,
+                                  "height": 40,
+                                  "opacity": 1,
+                                }
+                              }
+                            >
+                              <Text
+                                style={
+                                  Object {
+                                    "color": "red",
+                                    "fontFamily": "Roboto-Medium",
+                                    "fontSize": 18,
+                                    "marginTop": 5,
+                                    "textAlign": "center",
+                                  }
+                                }
+                              >
+                                <Text
+                                  style={
+                                    Object {
+                                      "color": "red",
+                                      "fontFamily": "Roboto-Medium",
+                                      "fontSize": 18,
+                                      "marginTop": 5,
+                                      "textAlign": "center",
+                                    }
+                                  }
+                                >
+                                  Discard
+                                </Text>
+                              </Text>
+                              <PressabilityDebugView
+                                color="cyan"
+                              />
+                            </View>
+                          </View>
+                        </AnimatedComponent>
+                      </ForwardRef(AnimatedComponentWrapper)>
+                    </TouchableOpacity>
+                  </ForwardRef>
+                  <ForwardRef
+                    onPress={[Function]}
+                    style={
+                      Object {
+                        "borderBottomRightRadius": 8,
+                        "borderColor": "grey",
+                        "borderTopWidth": 0.75,
+                        "flex": 1,
+                      }
+                    }
+                  >
+                    <TouchableOpacity
+                      hostRef={null}
+                      onPress={[Function]}
+                      style={
+                        Object {
+                          "borderBottomRightRadius": 8,
+                          "borderColor": "grey",
+                          "borderTopWidth": 0.75,
+                          "flex": 1,
+                        }
+                      }
+                    >
+                      <ForwardRef(AnimatedComponentWrapper)
+                        accessible={true}
+                        focusable={true}
+                        onClick={[Function]}
+                        onResponderGrant={[Function]}
+                        onResponderMove={[Function]}
+                        onResponderRelease={[Function]}
+                        onResponderTerminate={[Function]}
+                        onResponderTerminationRequest={[Function]}
+                        onStartShouldSetResponder={[Function]}
+                        style={
+                          Array [
+                            Object {
+                              "borderBottomRightRadius": 8,
+                              "borderColor": "grey",
+                              "borderTopWidth": 0.75,
+                              "flex": 1,
+                            },
+                            Object {
+                              "opacity": 1,
+                            },
+                          ]
+                        }
+                      >
+                        <AnimatedComponent
+                          accessible={true}
+                          focusable={true}
+                          onClick={[Function]}
+                          onResponderGrant={[Function]}
+                          onResponderMove={[Function]}
+                          onResponderRelease={[Function]}
+                          onResponderTerminate={[Function]}
+                          onResponderTerminationRequest={[Function]}
+                          onStartShouldSetResponder={[Function]}
+                          style={
+                            Array [
+                              Object {
+                                "borderBottomRightRadius": 8,
+                                "borderColor": "grey",
+                                "borderTopWidth": 0.75,
+                                "flex": 1,
+                              },
+                              Object {
+                                "opacity": 1,
+                              },
+                            ]
+                          }
+                        >
+                          <View
+                            accessible={true}
+                            focusable={true}
+                            onClick={[Function]}
+                            onResponderGrant={[Function]}
+                            onResponderMove={[Function]}
+                            onResponderRelease={[Function]}
+                            onResponderTerminate={[Function]}
+                            onResponderTerminationRequest={[Function]}
+                            onStartShouldSetResponder={[Function]}
+                            style={
+                              Object {
+                                "borderBottomRightRadius": 8,
+                                "borderColor": "grey",
+                                "borderTopWidth": 0.75,
+                                "flex": 1,
+                                "opacity": 1,
+                              }
+                            }
+                          >
+                            <View
+                              accessible={true}
+                              focusable={true}
+                              onClick={[Function]}
+                              onResponderGrant={[Function]}
+                              onResponderMove={[Function]}
+                              onResponderRelease={[Function]}
+                              onResponderTerminate={[Function]}
+                              onResponderTerminationRequest={[Function]}
+                              onStartShouldSetResponder={[Function]}
+                              style={
+                                Object {
+                                  "borderBottomRightRadius": 8,
+                                  "borderColor": "grey",
+                                  "borderTopWidth": 0.75,
+                                  "flex": 1,
+                                  "opacity": 1,
+                                }
+                              }
+                            >
+                              <Text
+                                style={
+                                  Object {
+                                    "color": "blue",
+                                    "fontFamily": "Roboto-Medium",
+                                    "fontSize": 18,
+                                    "marginTop": 5,
+                                    "textAlign": "center",
+                                  }
+                                }
+                              >
+                                <Text
+                                  style={
+                                    Object {
+                                      "color": "blue",
+                                      "fontFamily": "Roboto-Medium",
+                                      "fontSize": 18,
+                                      "marginTop": 5,
+                                      "textAlign": "center",
+                                    }
+                                  }
+                                >
+                                  Save
+                                </Text>
+                              </Text>
+                              <PressabilityDebugView
+                                color="cyan"
+                              />
+                            </View>
+                          </View>
+                        </AnimatedComponent>
+                      </ForwardRef(AnimatedComponentWrapper)>
+                    </TouchableOpacity>
+                  </ForwardRef>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </Modal>
+  </Component>
+</Confirmer>
+`;
+
+exports[`renders a Confirmer using Enzyme 2 1`] = `
+<Confirmer
+  confirmation={[MockFunction]}
+  confirming={false}
+>
+  <Component
+    animationType="none"
+    hardwareAccelerated={false}
+    transparent={true}
+    visible={false}
+  >
+    <Modal
+      animationType="none"
+      hardwareAccelerated={false}
+      transparent={true}
+      visible={false}
+    >
+      <View
+        style={
+          Object {
+            "alignItems": "center",
+            "backgroundColor": "#00000040",
+            "flex": 1,
+            "flexDirection": "column",
+            "justifyContent": "space-around",
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "#00000040",
+              "flex": 1,
+              "flexDirection": "column",
+              "justifyContent": "space-around",
+            }
+          }
+        >
+          <View
+            style={
+              Object {
+                "backgroundColor": "#FFFFFF",
+                "borderColor": "grey",
+                "borderRadius": 8,
+                "borderWidth": 0.5,
+                "display": "flex",
+                "height": 140,
+                "justifyContent": "center",
+                "width": 260,
+              }
+            }
+          >
+            <View
+              style={
+                Object {
+                  "backgroundColor": "#FFFFFF",
+                  "borderColor": "grey",
+                  "borderRadius": 8,
+                  "borderWidth": 0.5,
+                  "display": "flex",
+                  "height": 140,
+                  "justifyContent": "center",
+                  "width": 260,
+                }
+              }
+            >
+              <Text
+                style={
+                  Object {
+                    "fontFamily": "Roboto-Medium",
+                    "fontSize": 17,
+                    "marginBottom": 20,
+                    "marginHorizontal": 12,
+                    "textAlign": "center",
+                  }
+                }
+              >
+                <Text
+                  style={
+                    Object {
+                      "fontFamily": "Roboto-Medium",
+                      "fontSize": 17,
+                      "marginBottom": 20,
+                      "marginHorizontal": 12,
+                      "textAlign": "center",
+                    }
+                  }
+                >
+                  You have unsaved changes.
+                </Text>
+              </Text>
+              <View
+                style={
+                  Object {
+                    "alignSelf": "center",
+                    "bottom": 0,
+                    "flexDirection": "row",
+                    "position": "absolute",
+                  }
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "alignSelf": "center",
+                      "bottom": 0,
+                      "flexDirection": "row",
+                      "position": "absolute",
+                    }
+                  }
+                >
+                  <ForwardRef
+                    onPress={[Function]}
+                    style={
+                      Object {
+                        "borderBottomLeftRadius": 8,
+                        "borderColor": "grey",
+                        "borderTopWidth": 0.75,
+                        "flex": 1,
+                      }
+                    }
+                  >
+                    <TouchableOpacity
+                      hostRef={null}
+                      onPress={[Function]}
+                      style={
+                        Object {
+                          "borderBottomLeftRadius": 8,
+                          "borderColor": "grey",
+                          "borderTopWidth": 0.75,
+                          "flex": 1,
+                        }
+                      }
+                    >
+                      <ForwardRef(AnimatedComponentWrapper)
+                        accessible={true}
+                        focusable={true}
+                        onClick={[Function]}
+                        onResponderGrant={[Function]}
+                        onResponderMove={[Function]}
+                        onResponderRelease={[Function]}
+                        onResponderTerminate={[Function]}
+                        onResponderTerminationRequest={[Function]}
+                        onStartShouldSetResponder={[Function]}
+                        style={
+                          Array [
+                            Object {
+                              "borderBottomLeftRadius": 8,
+                              "borderColor": "grey",
+                              "borderTopWidth": 0.75,
+                              "flex": 1,
+                            },
+                            Object {
+                              "opacity": 1,
+                            },
+                          ]
+                        }
+                      >
+                        <AnimatedComponent
+                          accessible={true}
+                          focusable={true}
+                          onClick={[Function]}
+                          onResponderGrant={[Function]}
+                          onResponderMove={[Function]}
+                          onResponderRelease={[Function]}
+                          onResponderTerminate={[Function]}
+                          onResponderTerminationRequest={[Function]}
+                          onStartShouldSetResponder={[Function]}
+                          style={
+                            Array [
+                              Object {
+                                "borderBottomLeftRadius": 8,
+                                "borderColor": "grey",
+                                "borderTopWidth": 0.75,
+                                "flex": 1,
+                              },
+                              Object {
+                                "opacity": 1,
+                              },
+                            ]
+                          }
+                        >
+                          <View
+                            accessible={true}
+                            focusable={true}
+                            onClick={[Function]}
+                            onResponderGrant={[Function]}
+                            onResponderMove={[Function]}
+                            onResponderRelease={[Function]}
+                            onResponderTerminate={[Function]}
+                            onResponderTerminationRequest={[Function]}
+                            onStartShouldSetResponder={[Function]}
+                            style={
+                              Object {
+                                "borderBottomLeftRadius": 8,
+                                "borderColor": "grey",
+                                "borderTopWidth": 0.75,
+                                "flex": 1,
+                                "opacity": 1,
+                              }
+                            }
+                          >
+                            <View
+                              accessible={true}
+                              focusable={true}
+                              onClick={[Function]}
+                              onResponderGrant={[Function]}
+                              onResponderMove={[Function]}
+                              onResponderRelease={[Function]}
+                              onResponderTerminate={[Function]}
+                              onResponderTerminationRequest={[Function]}
+                              onStartShouldSetResponder={[Function]}
+                              style={
+                                Object {
+                                  "borderBottomLeftRadius": 8,
+                                  "borderColor": "grey",
+                                  "borderTopWidth": 0.75,
+                                  "flex": 1,
+                                  "opacity": 1,
+                                }
+                              }
+                            >
+                              <Text
+                                style={
+                                  Object {
+                                    "color": "grey",
+                                    "fontFamily": "Roboto-Medium",
+                                    "fontSize": 18,
+                                    "marginTop": 5,
+                                    "textAlign": "center",
+                                  }
+                                }
+                              >
+                                <Text
+                                  style={
+                                    Object {
+                                      "color": "grey",
+                                      "fontFamily": "Roboto-Medium",
+                                      "fontSize": 18,
+                                      "marginTop": 5,
+                                      "textAlign": "center",
+                                    }
+                                  }
+                                >
+                                  Cancel
+                                </Text>
+                              </Text>
+                              <PressabilityDebugView
+                                color="cyan"
+                              />
+                            </View>
+                          </View>
+                        </AnimatedComponent>
+                      </ForwardRef(AnimatedComponentWrapper)>
+                    </TouchableOpacity>
+                  </ForwardRef>
+                  <ForwardRef
+                    onPress={[Function]}
+                    style={
+                      Object {
+                        "borderColor": "grey",
+                        "borderLeftWidth": 0.65,
+                        "borderRightWidth": 0.65,
+                        "borderTopWidth": 0.75,
+                        "flex": 1,
+                        "height": 40,
+                      }
+                    }
+                  >
+                    <TouchableOpacity
+                      hostRef={null}
+                      onPress={[Function]}
+                      style={
+                        Object {
+                          "borderColor": "grey",
+                          "borderLeftWidth": 0.65,
+                          "borderRightWidth": 0.65,
+                          "borderTopWidth": 0.75,
+                          "flex": 1,
+                          "height": 40,
+                        }
+                      }
+                    >
+                      <ForwardRef(AnimatedComponentWrapper)
+                        accessible={true}
+                        focusable={true}
+                        onClick={[Function]}
+                        onResponderGrant={[Function]}
+                        onResponderMove={[Function]}
+                        onResponderRelease={[Function]}
+                        onResponderTerminate={[Function]}
+                        onResponderTerminationRequest={[Function]}
+                        onStartShouldSetResponder={[Function]}
+                        style={
+                          Array [
+                            Object {
+                              "borderColor": "grey",
+                              "borderLeftWidth": 0.65,
+                              "borderRightWidth": 0.65,
+                              "borderTopWidth": 0.75,
+                              "flex": 1,
+                              "height": 40,
+                            },
+                            Object {
+                              "opacity": 1,
+                            },
+                          ]
+                        }
+                      >
+                        <AnimatedComponent
+                          accessible={true}
+                          focusable={true}
+                          onClick={[Function]}
+                          onResponderGrant={[Function]}
+                          onResponderMove={[Function]}
+                          onResponderRelease={[Function]}
+                          onResponderTerminate={[Function]}
+                          onResponderTerminationRequest={[Function]}
+                          onStartShouldSetResponder={[Function]}
+                          style={
+                            Array [
+                              Object {
+                                "borderColor": "grey",
+                                "borderLeftWidth": 0.65,
+                                "borderRightWidth": 0.65,
+                                "borderTopWidth": 0.75,
+                                "flex": 1,
+                                "height": 40,
+                              },
+                              Object {
+                                "opacity": 1,
+                              },
+                            ]
+                          }
+                        >
+                          <View
+                            accessible={true}
+                            focusable={true}
+                            onClick={[Function]}
+                            onResponderGrant={[Function]}
+                            onResponderMove={[Function]}
+                            onResponderRelease={[Function]}
+                            onResponderTerminate={[Function]}
+                            onResponderTerminationRequest={[Function]}
+                            onStartShouldSetResponder={[Function]}
+                            style={
+                              Object {
+                                "borderColor": "grey",
+                                "borderLeftWidth": 0.65,
+                                "borderRightWidth": 0.65,
+                                "borderTopWidth": 0.75,
+                                "flex": 1,
+                                "height": 40,
+                                "opacity": 1,
+                              }
+                            }
+                          >
+                            <View
+                              accessible={true}
+                              focusable={true}
+                              onClick={[Function]}
+                              onResponderGrant={[Function]}
+                              onResponderMove={[Function]}
+                              onResponderRelease={[Function]}
+                              onResponderTerminate={[Function]}
+                              onResponderTerminationRequest={[Function]}
+                              onStartShouldSetResponder={[Function]}
+                              style={
+                                Object {
+                                  "borderColor": "grey",
+                                  "borderLeftWidth": 0.65,
+                                  "borderRightWidth": 0.65,
+                                  "borderTopWidth": 0.75,
+                                  "flex": 1,
+                                  "height": 40,
+                                  "opacity": 1,
+                                }
+                              }
+                            >
+                              <Text
+                                style={
+                                  Object {
+                                    "color": "red",
+                                    "fontFamily": "Roboto-Medium",
+                                    "fontSize": 18,
+                                    "marginTop": 5,
+                                    "textAlign": "center",
+                                  }
+                                }
+                              >
+                                <Text
+                                  style={
+                                    Object {
+                                      "color": "red",
+                                      "fontFamily": "Roboto-Medium",
+                                      "fontSize": 18,
+                                      "marginTop": 5,
+                                      "textAlign": "center",
+                                    }
+                                  }
+                                >
+                                  Discard
+                                </Text>
+                              </Text>
+                              <PressabilityDebugView
+                                color="cyan"
+                              />
+                            </View>
+                          </View>
+                        </AnimatedComponent>
+                      </ForwardRef(AnimatedComponentWrapper)>
+                    </TouchableOpacity>
+                  </ForwardRef>
+                  <ForwardRef
+                    onPress={[Function]}
+                    style={
+                      Object {
+                        "borderBottomRightRadius": 8,
+                        "borderColor": "grey",
+                        "borderTopWidth": 0.75,
+                        "flex": 1,
+                      }
+                    }
+                  >
+                    <TouchableOpacity
+                      hostRef={null}
+                      onPress={[Function]}
+                      style={
+                        Object {
+                          "borderBottomRightRadius": 8,
+                          "borderColor": "grey",
+                          "borderTopWidth": 0.75,
+                          "flex": 1,
+                        }
+                      }
+                    >
+                      <ForwardRef(AnimatedComponentWrapper)
+                        accessible={true}
+                        focusable={true}
+                        onClick={[Function]}
+                        onResponderGrant={[Function]}
+                        onResponderMove={[Function]}
+                        onResponderRelease={[Function]}
+                        onResponderTerminate={[Function]}
+                        onResponderTerminationRequest={[Function]}
+                        onStartShouldSetResponder={[Function]}
+                        style={
+                          Array [
+                            Object {
+                              "borderBottomRightRadius": 8,
+                              "borderColor": "grey",
+                              "borderTopWidth": 0.75,
+                              "flex": 1,
+                            },
+                            Object {
+                              "opacity": 1,
+                            },
+                          ]
+                        }
+                      >
+                        <AnimatedComponent
+                          accessible={true}
+                          focusable={true}
+                          onClick={[Function]}
+                          onResponderGrant={[Function]}
+                          onResponderMove={[Function]}
+                          onResponderRelease={[Function]}
+                          onResponderTerminate={[Function]}
+                          onResponderTerminationRequest={[Function]}
+                          onStartShouldSetResponder={[Function]}
+                          style={
+                            Array [
+                              Object {
+                                "borderBottomRightRadius": 8,
+                                "borderColor": "grey",
+                                "borderTopWidth": 0.75,
+                                "flex": 1,
+                              },
+                              Object {
+                                "opacity": 1,
+                              },
+                            ]
+                          }
+                        >
+                          <View
+                            accessible={true}
+                            focusable={true}
+                            onClick={[Function]}
+                            onResponderGrant={[Function]}
+                            onResponderMove={[Function]}
+                            onResponderRelease={[Function]}
+                            onResponderTerminate={[Function]}
+                            onResponderTerminationRequest={[Function]}
+                            onStartShouldSetResponder={[Function]}
+                            style={
+                              Object {
+                                "borderBottomRightRadius": 8,
+                                "borderColor": "grey",
+                                "borderTopWidth": 0.75,
+                                "flex": 1,
+                                "opacity": 1,
+                              }
+                            }
+                          >
+                            <View
+                              accessible={true}
+                              focusable={true}
+                              onClick={[Function]}
+                              onResponderGrant={[Function]}
+                              onResponderMove={[Function]}
+                              onResponderRelease={[Function]}
+                              onResponderTerminate={[Function]}
+                              onResponderTerminationRequest={[Function]}
+                              onStartShouldSetResponder={[Function]}
+                              style={
+                                Object {
+                                  "borderBottomRightRadius": 8,
+                                  "borderColor": "grey",
+                                  "borderTopWidth": 0.75,
+                                  "flex": 1,
+                                  "opacity": 1,
+                                }
+                              }
+                            >
+                              <Text
+                                style={
+                                  Object {
+                                    "color": "blue",
+                                    "fontFamily": "Roboto-Medium",
+                                    "fontSize": 18,
+                                    "marginTop": 5,
+                                    "textAlign": "center",
+                                  }
+                                }
+                              >
+                                <Text
+                                  style={
+                                    Object {
+                                      "color": "blue",
+                                      "fontFamily": "Roboto-Medium",
+                                      "fontSize": 18,
+                                      "marginTop": 5,
+                                      "textAlign": "center",
+                                    }
+                                  }
+                                >
+                                  Save
+                                </Text>
+                              </Text>
+                              <PressabilityDebugView
+                                color="cyan"
+                              />
+                            </View>
+                          </View>
+                        </AnimatedComponent>
+                      </ForwardRef(AnimatedComponentWrapper)>
+                    </TouchableOpacity>
+                  </ForwardRef>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </Modal>
+  </Component>
+</Confirmer>
+`;

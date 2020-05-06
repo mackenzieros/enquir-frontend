@@ -1,0 +1,97 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders a Question using Snapshots 1`] = `
+<View
+  style={
+    Object {
+      "backgroundColor": "#c3c4c9",
+      "borderRadius": 3,
+      "elevation": 1,
+      "flexDirection": "row",
+      "justifyContent": "space-between",
+      "marginBottom": 8,
+      "marginTop": 0,
+      "paddingBottom": 10,
+      "paddingLeft": 18,
+      "paddingRight": 16,
+      "paddingTop": 10,
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "flex": 12,
+        "flexDirection": "row",
+        "justifyContent": "flex-start",
+      }
+    }
+  >
+    <TextInput
+      allowFontScaling={true}
+      multiline={true}
+      onChangeText={[Function]}
+      onEndEditing={[Function]}
+      rejectResponderTermination={true}
+      style={
+        Object {
+          "flex": 1,
+          "flexWrap": "wrap",
+          "fontFamily": "Roboto-Regular",
+          "fontSize": 18,
+        }
+      }
+      underlineColorAndroid="transparent"
+    />
+  </View>
+  <View
+    style={
+      Object {
+        "flex": 1,
+        "flexDirection": "row",
+        "justifyContent": "flex-end",
+      }
+    }
+  >
+    <View
+      accessible={true}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <View>
+        <Text
+          allowFontScaling={false}
+          style={
+            Array [
+              Object {
+                "color": undefined,
+                "fontSize": 18,
+              },
+              undefined,
+              Object {
+                "fontFamily": "FontAwesome",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              Object {},
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;

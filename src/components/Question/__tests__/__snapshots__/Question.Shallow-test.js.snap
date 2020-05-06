@@ -1,0 +1,509 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders a Question using Enzyme 1 1`] = `
+<Question
+  id={0}
+  question=""
+>
+  <View
+    style={
+      Object {
+        "backgroundColor": "#c3c4c9",
+        "borderRadius": 3,
+        "elevation": 1,
+        "flexDirection": "row",
+        "justifyContent": "space-between",
+        "marginBottom": 8,
+        "marginTop": 0,
+        "paddingBottom": 10,
+        "paddingLeft": 18,
+        "paddingRight": 16,
+        "paddingTop": 10,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "backgroundColor": "#c3c4c9",
+          "borderRadius": 3,
+          "elevation": 1,
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "marginBottom": 8,
+          "marginTop": 0,
+          "paddingBottom": 10,
+          "paddingLeft": 18,
+          "paddingRight": 16,
+          "paddingTop": 10,
+        }
+      }
+    >
+      <View
+        style={
+          Object {
+            "flex": 12,
+            "flexDirection": "row",
+            "justifyContent": "flex-start",
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "flex": 12,
+              "flexDirection": "row",
+              "justifyContent": "flex-start",
+            }
+          }
+        >
+          <Component
+            allowFontScaling={true}
+            multiline={true}
+            onChangeText={[Function]}
+            onEndEditing={[Function]}
+            rejectResponderTermination={true}
+            style={
+              Object {
+                "flex": 1,
+                "flexWrap": "wrap",
+                "fontFamily": "Roboto-Regular",
+                "fontSize": 18,
+              }
+            }
+            underlineColorAndroid="transparent"
+            value=""
+          >
+            <TextInput
+              allowFontScaling={true}
+              multiline={true}
+              onChangeText={[Function]}
+              onEndEditing={[Function]}
+              rejectResponderTermination={true}
+              style={
+                Object {
+                  "flex": 1,
+                  "flexWrap": "wrap",
+                  "fontFamily": "Roboto-Regular",
+                  "fontSize": 18,
+                }
+              }
+              underlineColorAndroid="transparent"
+              value=""
+            />
+          </Component>
+        </View>
+      </View>
+      <View
+        style={
+          Object {
+            "flex": 1,
+            "flexDirection": "row",
+            "justifyContent": "flex-end",
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "flex": 1,
+              "flexDirection": "row",
+              "justifyContent": "flex-end",
+            }
+          }
+        >
+          <ForwardRef
+            onPress={[Function]}
+          >
+            <TouchableOpacity
+              hostRef={null}
+              onPress={[Function]}
+            >
+              <ForwardRef(AnimatedComponentWrapper)
+                accessible={true}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Array [
+                    undefined,
+                    Object {
+                      "opacity": 1,
+                    },
+                  ]
+                }
+              >
+                <AnimatedComponent
+                  accessible={true}
+                  focusable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    Array [
+                      undefined,
+                      Object {
+                        "opacity": 1,
+                      },
+                    ]
+                  }
+                >
+                  <View
+                    accessible={true}
+                    focusable={true}
+                    onClick={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
+                    style={
+                      Object {
+                        "opacity": 1,
+                      }
+                    }
+                  >
+                    <View
+                      accessible={true}
+                      focusable={true}
+                      onClick={[Function]}
+                      onResponderGrant={[Function]}
+                      onResponderMove={[Function]}
+                      onResponderRelease={[Function]}
+                      onResponderTerminate={[Function]}
+                      onResponderTerminationRequest={[Function]}
+                      onStartShouldSetResponder={[Function]}
+                      style={
+                        Object {
+                          "opacity": 1,
+                        }
+                      }
+                    >
+                      <View>
+                        <View>
+                          <Icon
+                            allowFontScaling={false}
+                            name="trash"
+                            size={18}
+                          >
+                            <Text
+                              allowFontScaling={false}
+                              style={
+                                Array [
+                                  Object {
+                                    "color": undefined,
+                                    "fontSize": 18,
+                                  },
+                                  undefined,
+                                  Object {
+                                    "fontFamily": "FontAwesome",
+                                    "fontStyle": "normal",
+                                    "fontWeight": "normal",
+                                  },
+                                  Object {},
+                                ]
+                              }
+                            >
+                              <Text
+                                allowFontScaling={false}
+                                style={
+                                  Array [
+                                    Object {
+                                      "color": undefined,
+                                      "fontSize": 18,
+                                    },
+                                    undefined,
+                                    Object {
+                                      "fontFamily": "FontAwesome",
+                                      "fontStyle": "normal",
+                                      "fontWeight": "normal",
+                                    },
+                                    Object {},
+                                  ]
+                                }
+                              >
+                                
+                              </Text>
+                            </Text>
+                          </Icon>
+                        </View>
+                      </View>
+                      <PressabilityDebugView
+                        color="cyan"
+                      />
+                    </View>
+                  </View>
+                </AnimatedComponent>
+              </ForwardRef(AnimatedComponentWrapper)>
+            </TouchableOpacity>
+          </ForwardRef>
+        </View>
+      </View>
+    </View>
+  </View>
+</Question>
+`;
+
+exports[`renders a Question using Enzyme 2 1`] = `
+<Question
+  id={0}
+  question="If mirrors aren't real, how can mirrors be real?"
+>
+  <View
+    style={
+      Object {
+        "backgroundColor": "#c3c4c9",
+        "borderRadius": 3,
+        "elevation": 1,
+        "flexDirection": "row",
+        "justifyContent": "space-between",
+        "marginBottom": 8,
+        "marginTop": 0,
+        "paddingBottom": 10,
+        "paddingLeft": 18,
+        "paddingRight": 16,
+        "paddingTop": 10,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "backgroundColor": "#c3c4c9",
+          "borderRadius": 3,
+          "elevation": 1,
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "marginBottom": 8,
+          "marginTop": 0,
+          "paddingBottom": 10,
+          "paddingLeft": 18,
+          "paddingRight": 16,
+          "paddingTop": 10,
+        }
+      }
+    >
+      <View
+        style={
+          Object {
+            "flex": 12,
+            "flexDirection": "row",
+            "justifyContent": "flex-start",
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "flex": 12,
+              "flexDirection": "row",
+              "justifyContent": "flex-start",
+            }
+          }
+        >
+          <Component
+            allowFontScaling={true}
+            multiline={true}
+            onChangeText={[Function]}
+            onEndEditing={[Function]}
+            rejectResponderTermination={true}
+            style={
+              Object {
+                "flex": 1,
+                "flexWrap": "wrap",
+                "fontFamily": "Roboto-Regular",
+                "fontSize": 18,
+              }
+            }
+            underlineColorAndroid="transparent"
+            value="If mirrors aren't real, how can mirrors be real?"
+          >
+            <TextInput
+              allowFontScaling={true}
+              multiline={true}
+              onChangeText={[Function]}
+              onEndEditing={[Function]}
+              rejectResponderTermination={true}
+              style={
+                Object {
+                  "flex": 1,
+                  "flexWrap": "wrap",
+                  "fontFamily": "Roboto-Regular",
+                  "fontSize": 18,
+                }
+              }
+              underlineColorAndroid="transparent"
+              value="If mirrors aren't real, how can mirrors be real?"
+            />
+          </Component>
+        </View>
+      </View>
+      <View
+        style={
+          Object {
+            "flex": 1,
+            "flexDirection": "row",
+            "justifyContent": "flex-end",
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "flex": 1,
+              "flexDirection": "row",
+              "justifyContent": "flex-end",
+            }
+          }
+        >
+          <ForwardRef
+            onPress={[Function]}
+          >
+            <TouchableOpacity
+              hostRef={null}
+              onPress={[Function]}
+            >
+              <ForwardRef(AnimatedComponentWrapper)
+                accessible={true}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Array [
+                    undefined,
+                    Object {
+                      "opacity": 1,
+                    },
+                  ]
+                }
+              >
+                <AnimatedComponent
+                  accessible={true}
+                  focusable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    Array [
+                      undefined,
+                      Object {
+                        "opacity": 1,
+                      },
+                    ]
+                  }
+                >
+                  <View
+                    accessible={true}
+                    focusable={true}
+                    onClick={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
+                    style={
+                      Object {
+                        "opacity": 1,
+                      }
+                    }
+                  >
+                    <View
+                      accessible={true}
+                      focusable={true}
+                      onClick={[Function]}
+                      onResponderGrant={[Function]}
+                      onResponderMove={[Function]}
+                      onResponderRelease={[Function]}
+                      onResponderTerminate={[Function]}
+                      onResponderTerminationRequest={[Function]}
+                      onStartShouldSetResponder={[Function]}
+                      style={
+                        Object {
+                          "opacity": 1,
+                        }
+                      }
+                    >
+                      <View>
+                        <View>
+                          <Icon
+                            allowFontScaling={false}
+                            name="trash"
+                            size={18}
+                          >
+                            <Text
+                              allowFontScaling={false}
+                              style={
+                                Array [
+                                  Object {
+                                    "color": undefined,
+                                    "fontSize": 18,
+                                  },
+                                  undefined,
+                                  Object {
+                                    "fontFamily": "FontAwesome",
+                                    "fontStyle": "normal",
+                                    "fontWeight": "normal",
+                                  },
+                                  Object {},
+                                ]
+                              }
+                            >
+                              <Text
+                                allowFontScaling={false}
+                                style={
+                                  Array [
+                                    Object {
+                                      "color": undefined,
+                                      "fontSize": 18,
+                                    },
+                                    undefined,
+                                    Object {
+                                      "fontFamily": "FontAwesome",
+                                      "fontStyle": "normal",
+                                      "fontWeight": "normal",
+                                    },
+                                    Object {},
+                                  ]
+                                }
+                              >
+                                
+                              </Text>
+                            </Text>
+                          </Icon>
+                        </View>
+                      </View>
+                      <PressabilityDebugView
+                        color="cyan"
+                      />
+                    </View>
+                  </View>
+                </AnimatedComponent>
+              </ForwardRef(AnimatedComponentWrapper)>
+            </TouchableOpacity>
+          </ForwardRef>
+        </View>
+      </View>
+    </View>
+  </View>
+</Question>
+`;

@@ -1,0 +1,111 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders a Loader using Snapshots and is loading 1`] = `
+<Modal
+  animationType="none"
+  hardwareAccelerated={false}
+  transparent={true}
+  visible={true}
+>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "#00000040",
+        "flex": 1,
+        "flexDirection": "column",
+        "justifyContent": "space-around",
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "backgroundColor": "#FFFFFF",
+          "borderRadius": 10,
+          "display": "flex",
+          "height": 120,
+          "justifyContent": "center",
+          "width": 130,
+        }
+      }
+    >
+      <Text
+        style={
+          Object {
+            "alignSelf": "center",
+            "fontFamily": "Roboto-Light",
+            "fontSize": 16,
+            "marginBottom": 20,
+            "textAlign": "center",
+          }
+        }
+      >
+        
+      </Text>
+      <ActivityIndicator
+        animating={true}
+        color="#999999"
+        hidesWhenStopped={true}
+        size="small"
+      />
+    </View>
+  </View>
+</Modal>
+`;
+
+exports[`renders a Loader using Snapshots and is not loading 1`] = `
+<Modal
+  animationType="none"
+  hardwareAccelerated={false}
+  transparent={true}
+  visible={false}
+>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "#00000040",
+        "flex": 1,
+        "flexDirection": "column",
+        "justifyContent": "space-around",
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "backgroundColor": "#FFFFFF",
+          "borderRadius": 10,
+          "display": "flex",
+          "height": 120,
+          "justifyContent": "center",
+          "width": 130,
+        }
+      }
+    >
+      <Text
+        style={
+          Object {
+            "alignSelf": "center",
+            "fontFamily": "Roboto-Light",
+            "fontSize": 16,
+            "marginBottom": 20,
+            "textAlign": "center",
+          }
+        }
+      >
+        
+      </Text>
+      <ActivityIndicator
+        animating={false}
+        color="#999999"
+        hidesWhenStopped={true}
+        size="small"
+      />
+    </View>
+  </View>
+</Modal>
+`;

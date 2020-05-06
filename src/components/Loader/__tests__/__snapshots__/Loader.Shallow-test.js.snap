@@ -1,0 +1,225 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders a Loader using Enzyme 1 1`] = `
+<Loader
+  loadText="test"
+  loading={false}
+>
+  <Component
+    animationType="none"
+    hardwareAccelerated={false}
+    transparent={true}
+    visible={false}
+  >
+    <Modal
+      animationType="none"
+      hardwareAccelerated={false}
+      transparent={true}
+      visible={false}
+    >
+      <View
+        style={
+          Object {
+            "alignItems": "center",
+            "backgroundColor": "#00000040",
+            "flex": 1,
+            "flexDirection": "column",
+            "justifyContent": "space-around",
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "#00000040",
+              "flex": 1,
+              "flexDirection": "column",
+              "justifyContent": "space-around",
+            }
+          }
+        >
+          <View
+            style={
+              Object {
+                "alignItems": "center",
+                "backgroundColor": "#FFFFFF",
+                "borderRadius": 10,
+                "display": "flex",
+                "height": 120,
+                "justifyContent": "center",
+                "width": 130,
+              }
+            }
+          >
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "backgroundColor": "#FFFFFF",
+                  "borderRadius": 10,
+                  "display": "flex",
+                  "height": 120,
+                  "justifyContent": "center",
+                  "width": 130,
+                }
+              }
+            >
+              <Text
+                style={
+                  Object {
+                    "alignSelf": "center",
+                    "fontFamily": "Roboto-Light",
+                    "fontSize": 16,
+                    "marginBottom": 20,
+                    "textAlign": "center",
+                  }
+                }
+              >
+                <Text
+                  style={
+                    Object {
+                      "alignSelf": "center",
+                      "fontFamily": "Roboto-Light",
+                      "fontSize": 16,
+                      "marginBottom": 20,
+                      "textAlign": "center",
+                    }
+                  }
+                >
+                  test
+                </Text>
+              </Text>
+              <ActivityIndicator
+                animating={false}
+                color="#999999"
+                hidesWhenStopped={true}
+                size="small"
+              >
+                <ActivityIndicator
+                  animating={false}
+                  color="#999999"
+                  hidesWhenStopped={true}
+                  size="small"
+                />
+              </ActivityIndicator>
+            </View>
+          </View>
+        </View>
+      </View>
+    </Modal>
+  </Component>
+</Loader>
+`;
+
+exports[`renders a Loader using Enzyme 2 1`] = `
+<Loader
+  loadText="test"
+  loading={true}
+>
+  <Component
+    animationType="none"
+    hardwareAccelerated={false}
+    transparent={true}
+    visible={true}
+  >
+    <Modal
+      animationType="none"
+      hardwareAccelerated={false}
+      transparent={true}
+      visible={true}
+    >
+      <View
+        style={
+          Object {
+            "alignItems": "center",
+            "backgroundColor": "#00000040",
+            "flex": 1,
+            "flexDirection": "column",
+            "justifyContent": "space-around",
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "#00000040",
+              "flex": 1,
+              "flexDirection": "column",
+              "justifyContent": "space-around",
+            }
+          }
+        >
+          <View
+            style={
+              Object {
+                "alignItems": "center",
+                "backgroundColor": "#FFFFFF",
+                "borderRadius": 10,
+                "display": "flex",
+                "height": 120,
+                "justifyContent": "center",
+                "width": 130,
+              }
+            }
+          >
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "backgroundColor": "#FFFFFF",
+                  "borderRadius": 10,
+                  "display": "flex",
+                  "height": 120,
+                  "justifyContent": "center",
+                  "width": 130,
+                }
+              }
+            >
+              <Text
+                style={
+                  Object {
+                    "alignSelf": "center",
+                    "fontFamily": "Roboto-Light",
+                    "fontSize": 16,
+                    "marginBottom": 20,
+                    "textAlign": "center",
+                  }
+                }
+              >
+                <Text
+                  style={
+                    Object {
+                      "alignSelf": "center",
+                      "fontFamily": "Roboto-Light",
+                      "fontSize": 16,
+                      "marginBottom": 20,
+                      "textAlign": "center",
+                    }
+                  }
+                >
+                  test
+                </Text>
+              </Text>
+              <ActivityIndicator
+                animating={true}
+                color="#999999"
+                hidesWhenStopped={true}
+                size="small"
+              >
+                <ActivityIndicator
+                  animating={true}
+                  color="#999999"
+                  hidesWhenStopped={true}
+                  size="small"
+                />
+              </ActivityIndicator>
+            </View>
+          </View>
+        </View>
+      </View>
+    </Modal>
+  </Component>
+</Loader>
+`;

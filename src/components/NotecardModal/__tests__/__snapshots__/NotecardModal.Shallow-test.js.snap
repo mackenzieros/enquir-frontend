@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders a NotecardModal using Enzyme 1 1`] = `
+<NotecardModal
+  onClose={[MockFunction]}
+  onSave={[MockFunction]}
+  show={false}
+/>
+`;
+
+exports[`renders a NotecardModal using Enzyme 2 1`] = `
+<NotecardModal
+  onClose={[MockFunction]}
+  onSave={[MockFunction]}
+  show={false}
+/>
+`;
