@@ -7,12 +7,16 @@ import {
   TouchableOpacity,
   TouchableNativeFeedback,
 } from 'react-native';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { showModal, deleteNote, /*loadNotes*/ } from './actions/NoteActions';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import NotecardModal from './components/NotecardModal/NotecardModal';
 import { Storage } from './services/Storage';
-import { containers, buttons, text } from './MainStyles';
 import { PushNotification } from './services/PushNotification';
 import { search } from './helpers/BinarySearch';
+import { containers, buttons, text } from './MainStyles';
+
 const NOTECARD_DESC_LIMIT = 75;
 
 // Used to paraphrase notes for display
@@ -36,7 +40,7 @@ const Notecard = ({ parent, item }) => {
       <View style={containers.notecard}>
         <View style={containers.topicContainer}>
           <Text style={text.topic}>{item.topic}</Text>
-          <TouchableOpacity onPress={() => { parent.deleteNote(item) }}>
+          <TouchableOpacity onPress={() => { parent.deleteNote(item.id) }}>
             <Icon name='trash' size={15} />
           </TouchableOpacity>
         </View>
@@ -48,70 +52,46 @@ const Notecard = ({ parent, item }) => {
   );
 }
 
-export default class Main extends Component {
+class Main extends Component {
   notecardRef = React.createRef();
-  state = {
-    showingModal: false,
-    notes: [],
-  };
-
-  // Set visibility of note-adding modal
-  showModal = () => {
-    this.setState({
-      showingModal: !this.state.showingModal
-    });
-  };
 
   // Update the notecard modal's state with the item
   loadModal = (item) => {
     this.notecardRef.current.loadData(item);
   };
 
-  deleteNote = async (item) => {
-    const index = search(item.id, this.state.notes, "id");
+  deleteNote = async (id) => {
+    const index = search(id, this.props.notes, "id");
     if (index == -1) {
       console.log('err trying to delete notecard');
       return;
     }
 
-    // Splice out the note item
-    const notes = [
-      ...this.state.notes.slice(0, index),
-      ...this.state.notes.slice(index + 1)
-    ];
-
-    const noteObj = this.state.notes[index];
     // Cancel all of the notifications this notecard had
+    const noteObj = this.props.notes[index];
     (noteObj.questions).forEach(questionObj => {
       const notifId = ((noteObj.id).toString()).concat((questionObj.id).toString());
       PushNotification.cancelLocalNotification(notifId);
     });
 
-    await Storage.addNotes(notes);
-    this.loadNotes();
-  };
-
-  // Updates notes and the last index
-  loadNotes = () => {
-    Storage.retrieveNotes()
-      .then(notes => this.setState({
-        notes: notes,
-      }));
+    // Call reducer to delete note
+    this.props.deleteNote(index);
   };
 
   // Close modal and update notes
   saveNote = () => {
-    this.showModal();
-    this.loadNotes();
+    this.props.showModal();
+    // this.props.loadNotes();
   };
 
-  // Load notes data from storage
-  componentDidMount() {
-    this.loadNotes();
+  async componentDidUpdate(prevProps) {
+    if (this.props.notes !== prevProps.notes) {
+      await Storage.addNotes(this.props.notes);
+    }
   }
 
   render() {
-    const { notes, showingModal } = this.state;
+    const { notes, showingModal } = this.props;
 
     return (
       <SafeAreaView style={containers.wrapper}>
@@ -134,14 +114,14 @@ export default class Main extends Component {
         <NotecardModal
           ref={this.notecardRef}
           show={showingModal}
-          onClose={this.showModal}
-          onSave={this.saveNote}
+          onClose={this.props.showModal}
+          onSave={this.props.showModal}
         />
         <TouchableOpacity
           style={buttons.addButton}
           onPress={() => {
             this.loadModal(null)
-            this.showModal();
+            this.props.showModal();
           }}>
           <Icon name='plus' size={30} style={{ marginLeft: 17.5, color: '#f0f0f0' }} />
         </TouchableOpacity>
@@ -149,3 +129,18 @@ export default class Main extends Component {
     );
   }
 };
+
+const mapStateToProps = (state) => {
+  const { showingModal, notes } = state.main;
+  return { showingModal, notes };
+};
+
+const mapDispatchToProps = dispatch => (
+  bindActionCreators({
+    showModal,
+    deleteNote,
+    // loadNotes,
+  }, dispatch)
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Main);
