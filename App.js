@@ -1,11 +1,11 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
-import notecardReducer from './src/reducers/NotecardReducer';
+import rootReducer from './src/reducers/RootReducer';
 import Main from './src/Main';
 import { PushNotification } from './src/services/PushNotification';
 
-const store = createStore(notecardReducer);
+const store = createStore(rootReducer);
 
 PushNotification.configure();
 

@@ -9,7 +9,8 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { showModal, deleteNote, /*loadNotes*/ } from './actions/NoteActions';
+import { showModal, deleteNote, loadNotes } from './actions/MainActions';
+import { loadData } from './actions/NotecardActions';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import NotecardModal from './components/NotecardModal/NotecardModal';
 import { Storage } from './services/Storage';
@@ -34,13 +35,13 @@ const Notecard = ({ parent, item }) => {
   return (
     <TouchableNativeFeedback
       onPress={() => {
-        parent.loadModal(item);
-        parent.showModal();
+        parent.props.loadData(item);
+        parent.props.showModal();
       }}>
       <View style={containers.notecard}>
         <View style={containers.topicContainer}>
           <Text style={text.topic}>{item.topic}</Text>
-          <TouchableOpacity onPress={() => { parent.deleteNote(item.id) }}>
+          <TouchableOpacity onPress={() => { parent.props.deleteNote(item.id) }}>
             <Icon name='trash' size={15} />
           </TouchableOpacity>
         </View>
@@ -79,9 +80,10 @@ class Main extends Component {
   };
 
   // Close modal and update notes
-  saveNote = () => {
+  saveNote = async () => {
     this.props.showModal();
-    // this.props.loadNotes();
+    const notes = await Storage.getNotes();
+    this.props.loadNotes(notes);
   };
 
   async componentDidUpdate(prevProps) {
@@ -112,15 +114,14 @@ class Main extends Component {
           />
         </View>
         <NotecardModal
-          ref={this.notecardRef}
           show={showingModal}
           onClose={this.props.showModal}
-          onSave={this.props.showModal}
+          onSave={this.saveNote}
         />
         <TouchableOpacity
           style={buttons.addButton}
           onPress={() => {
-            this.loadModal(null)
+            this.props.loadData(null)
             this.props.showModal();
           }}>
           <Icon name='plus' size={30} style={{ marginLeft: 17.5, color: '#f0f0f0' }} />
@@ -131,7 +132,7 @@ class Main extends Component {
 };
 
 const mapStateToProps = (state) => {
-  const { showingModal, notes } = state.main;
+  const { showingModal, notes } = state.mainReducer;
   return { showingModal, notes };
 };
 
@@ -139,8 +140,12 @@ const mapDispatchToProps = dispatch => (
   bindActionCreators({
     showModal,
     deleteNote,
-    // loadNotes,
+    loadData,
+    loadNotes,
   }, dispatch)
 );
 
-export default connect(mapStateToProps, mapDispatchToProps)(Main);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Main);

@@ -1,47 +1,54 @@
-import { combineReducers } from 'redux';
-import { Storage } from '../services/Storage';
-
 const INITIAL_STATE = {
-  showingModal: false,
-  notes: [{
-    id: 0,
-    topic: 'Test Topic',
-    notes: 'Blah blah blah stuff here',
-    questions: [{
-      id: 0,
-      question: 'Where am I?',
-    }],
-    notifications: true,
-  }],
+  isLoading: false,
+  noteObj: null,
+  showingQuestions: false,
+  showingAddQuestionButton: true,
+  topicInput: '',
+  notesInput: '',
+  questions: [],
+  notificationsPrev: false, // used for scheduling notifications on state change only; to avoid scheduling notifs on every save
+  notifications: true,
+  hasChanges: false,
+  needsConfirmation: false,
 };
 
-Storage.retrieveNotes()
-  .then(notes => {
-    INITIAL_STATE.notes = notes;
-  });
+export default notecardReducer = (state=INITIAL_STATE, action) => {
+  const currState = {...state};
 
-const mainReducer = (state = INITIAL_STATE, action) => {
-  const { showingModal, notes } = state;
   switch (action.type) {
-    case 'TOGGLE_MODAL':
-      return { showingModal: !showingModal, notes };
-    case 'DEL_NOTE':
-      const index = action.payload;
-      // Splice out the note item
-      const newNotes = [
-        ...notes.slice(0, index),
-        ...notes.slice(index + 1)
-      ];
+    case 'LOAD_NOTECARD':
+      const { item } = action.payload
 
-      const newState = { showingModal, notes: newNotes };
-      return newState;
-    // case 'LOAD_NOTES':
-    //   return { showingModal, notes: action.payload };
+      if (item == null) {
+        return {...INITIAL_STATE};
+      } else {
+        currState.noteObj = item;
+        currState.topicInput = item.topic;
+        currState.notesInput = item.notes;
+        currState.showingQuestions = false;
+        currState.questions = item.questions;
+        currState.notificationsPrev = item.notifications;
+        currState.notifications = item.notifications;
+        return currState;
+      }
+    case 'TOGGLE_LOADER':
+      const { text, isLoading } = action.payload;
+      currState.isLoading = isLoading;
+      currState.loadingState = text;
+      return currState;
+    case 'SHOW_QUESTIONS':
+      currState.showingQuestions = !currState.showingQuestions;
+      return currState;
+    case 'CHANGES':
+      currState.hasChanges = action.payload;
+      return currState;
+    case 'TOPIC': 
+      currState.topicInput = action.payload;
+      return currState;
+    case 'CONFIRMATION':
+      currState.needsConfirmation = !currState.needsConfirmation;
+      return currState;
     default:
       return state;
   }
 };
-
-export default combineReducers({
-  main: mainReducer,
-});

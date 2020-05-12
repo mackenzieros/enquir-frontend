@@ -11,6 +11,16 @@ import {
   View,
   TextInput,
 } from 'react-native';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import {
+  showQuestions,
+  toggleLoader,
+  loadData,
+  changes,
+  toggleConfirmation,
+  topicChange,
+} from '../../actions/NotecardActions';
 import { containers, buttons, inputs, text } from './Styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Question from '../Question/Question';
@@ -47,114 +57,49 @@ const NotifIcon = ({ notifications }) => {
   }
 };
 
-export default class NotecardModal extends Component {
-  state = {
-    isLoading: false,
-    noteObj: null,
-    showingQuestions: false,
-    showingAddQuestionButton: true,
-    topicInput: '',
-    notesInput: '',
-    questions: [],
-    notificationsPrev: false, // used for scheduling notifications on state change only; to avoid scheduling notifs on every save
-    notifications: true,
-    hasChanges: false,
-    needsConfirmation: false,
-  };
+class NotecardModal extends Component {
   validChanges = new Set(["topicInput", "notesInput", "questions", "notifications"]);
-
-  resetNotecard = () => {
-    this.state.questions.length = 0;
-    this.setState({
-      isLoading: false,
-      noteObj: null,
-      showingQuestions: false,
-      showingAddQuestionButton: true,
-      topicInput: '',
-      notesInput: '',
-      questions: this.state.questions,
-      notificationsPrev: false,
-      notifications: true,
-      hasChanges: false,
-      needsConfirmation: false,
-    });
-  };
-
-  // Called by Main component to pass data to modal
-  loadData = (item) => {
-    // If no item is passed, reset state of modal to represent an empty notecard,
-    // otherwise populate the notecard with info
-    if (item == null) {
-      this.resetNotecard();
-    } else {
-      this.setState({
-        noteObj: item,
-        topicInput: item.topic,
-        notesInput: item.notes,
-        showingQuestions: false,
-        questions: item.questions,
-        notificationsPrev: item.notifications,
-        notifications: item.notifications,
-      });
-    }
-  };
 
   // Called within confirmer to handle unsaved changes
   onConfirmation = async (decision) => {
-    this.setState({
-      needsConfirmation: false,
-    });
-    if (decision === "discard") {
-      this.setState({
-        hasChanges: false,
-      });
-      this.resetNotecard();
-      this.props.onClose && this.props.onClose();
-    } else if (decision === "save") {
+    this.props.toggleConfirmation();
+    if (decision === "save") {
       await this.onSave();
+    } else if (decision == "discard") {
+      this.props.changes(false);
+      this.props.loadData(null);
+      this.props.onClose && this.props.onClose();
     }
   };
 
   // Close the modal in parent component
   onClose = () => {
-    if (this.state.hasChanges) {
-      this.setState({
-        needsConfirmation: true,
-      });
+    if (this.props.hasChanges) {
+      this.props.toggleConfirmation();
     } else {
       this.props.onClose && this.props.onClose();
     }
   };
 
-  // Handles display of questions
-  showQuestions = () => {
-    this.setState({
-      showingQuestions: !this.state.showingQuestions,
-    });
-  };
-
   // Saves notecard and generates questions
   onSave = async () => {
-    this.setState({
-      isLoading: true,    // show loader while request is performing
-      loadingState: 'Saving...',
-    });
+    this.props.toggleLoader('Saving...', true);
 
     // get existing notes
-    var existingNotes = await Storage.retrieveNotes();
+    var existingNotes = await Storage.getNotes();
 
     // default topic name
-    const topic = this.state.topicInput.length > 0 ? this.state.topicInput : 'Untitled';
+    const topic = this.props.topicInput.length > 0 ? this.props.topicInput : 'Untitled';
     var id = -1;
     // overwrite notecard
-    if (this.state.noteObj) {
-      id = existingNotes.findIndex((note) => note.id == this.state.noteObj.id);
+    if (this.props.noteObj) {
+      id = existingNotes.findIndex((note) => note.id == this.props.noteObj.id);
       existingNotes[id] = {
         id: id,
         topic: topic,
-        notes: this.state.notesInput,
-        questions: this.state.questions,
-        notifications: this.state.notifications,
+        notes: this.props.notesInput,
+        questions: this.props.questions,
+        notifications: this.props.notifications,
       }
     } else {
       // add new notecard
@@ -168,9 +113,9 @@ export default class NotecardModal extends Component {
       existingNotes.push({
         id: id,
         topic: topic,
-        notes: this.state.notesInput,
-        questions: this.state.questions,
-        notifications: this.state.notifications,
+        notes: this.props.notesInput,
+        questions: this.props.questions,
+        notifications: this.props.notifications,
       });
     }
 
@@ -181,9 +126,9 @@ export default class NotecardModal extends Component {
     this._toggleNotifications(id);
 
     // reset modal
-    this.resetNotecard();
-
-    this.props.onSave && this.props.onSave();
+    this.props.loadData(null);
+    this.props.onSave && await this.props.onSave();
+    this.props.toggleLoader('', false);
   };
 
   // Scrape web page for content on a topic
@@ -322,7 +267,7 @@ export default class NotecardModal extends Component {
 
   // Schedules or cancels notifications depending on toggle value (called on-save)
   _toggleNotifications = (id) => {
-    const { notificationsPrev, notifications, topicInput } = this.state;
+    const { notificationsPrev, notifications, topicInput } = this.props;
     if (notificationsPrev === notifications) {
       return;
     }
@@ -334,7 +279,7 @@ export default class NotecardModal extends Component {
       fn = PushNotification.cancelLocalNotification;
     }
 
-    this.state.questions.forEach(questionObj => {
+    this.props.questions.forEach(questionObj => {
       const notifId = (id.toString()).concat((questionObj.id).toString());
       const { question } = questionObj;
       fn(notifId, topicInput, question);
@@ -364,14 +309,12 @@ export default class NotecardModal extends Component {
 
   // Checks when the notecard updates, if any changes to topic input, notes input, questions, or notifications settings occurred.
   // If so, then we set the state of having changes to be true so we can notify the user.
-  componentDidUpdate(prevProps, prevState) {        // the following are state changes describing a valid update
-    if ((!prevState.noteObj && !this.state.noteObj)  // case 1: update on empty card
-      || ((prevState.noteObj && this.state.noteObj) && (prevState.noteObj.id === this.state.noteObj.id))) {  // case 2: update on existing card
-      const difference = Object.keys(prevState).filter(k => prevState[k] !== this.state[k] && this.validChanges.has(k));
-      if (difference.length && !this.state.hasChanges) {
-        this.setState({
-          hasChanges: true,
-        });
+  componentDidUpdate(prevProps) {        // the following are state changes describing a valid update
+    if ((!prevProps.noteObj && !this.props.noteObj)  // case 1: update on empty card
+      || ((prevProps.noteObj && this.props.noteObj) && (prevProps.noteObj.id === this.props.noteObj.id))) {  // case 2: update on existing card
+      const difference = Object.keys(prevProps).filter(k => prevProps[k] !== this.props[k] && this.validChanges.has(k));
+      if (difference.length && !this.props.hasChanges) {
+        this.props.changes(true);
       }
     }
   };
@@ -401,7 +344,7 @@ export default class NotecardModal extends Component {
       questions,
       notifications,
       needsConfirmation,
-    } = this.state;
+    } = this.props;
 
     return (
       <Modal
@@ -436,7 +379,7 @@ export default class NotecardModal extends Component {
               <View style={containers.topicContainer}>
                 <TextInput
                   style={inputs.topicInput}
-                  onChangeText={(topicInput) => this.setState({ topicInput })}
+                  onChangeText={(topicInput) => this.props.topicChange(topicInput)}
                   value={topicInput}
                   placeholder={'Enter topic'}
                 />
@@ -445,12 +388,12 @@ export default class NotecardModal extends Component {
                 <TouchableOpacity
                   onPress={this.autoPop}
                   style={buttons.autoPopButtonContainer} >
-                    <Icon name='magic' size={30} color='#fffdf9' style={{ marginTop: 5.5 }} />
+                  <Icon name='magic' size={30} color='#fffdf9' style={{ marginTop: 5.5 }} />
                 </TouchableOpacity>
                 <TouchableOpacity
-                  onPress={this.showQuestions}
+                  onPress={this.props.showQuestions}
                   style={buttons.questionTab} >
-                    <TabIcon showingQuestions={showingQuestions} />
+                  <TabIcon showingQuestions={showingQuestions} />
                 </TouchableOpacity>
               </View>
               <View style={containers.notesContainer}>
@@ -521,3 +464,51 @@ export default class NotecardModal extends Component {
     );
   }
 };
+
+const mapStateToProps = (state) => {
+  const {
+    isLoading,
+    noteObj,
+    showingQuestions,
+    showingAddQuestionButton,
+    topicInput,
+    notesInput,
+    questions,
+    notificationsPrev,
+    notifications,
+    hasChanges,
+    needsConfirmation,
+    loadingState,
+  } = state.notecardReducer;
+
+  return {
+    isLoading,
+    noteObj,
+    showingQuestions,
+    showingAddQuestionButton,
+    topicInput,
+    notesInput,
+    questions,
+    notificationsPrev,
+    notifications,
+    hasChanges,
+    needsConfirmation,
+    loadingState,
+  };
+};
+
+const mapDispatchToProps = dispatch => (
+  bindActionCreators({
+    showQuestions,
+    toggleLoader,
+    loadData,
+    changes,
+    toggleConfirmation,
+    topicChange,
+  }, dispatch)
+);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(NotecardModal);

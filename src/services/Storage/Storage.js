@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-community/async-storage';
 
-const retrieveNotes = async () => {
+const getNotes = async () => {
   try {
     const notes = await AsyncStorage.getItem('notes');
     if (notes !== null) {
@@ -29,7 +29,7 @@ const appendNotes = async (data) => {
 };
 
 export {
-  retrieveNotes,
+  getNotes,
   addNotes,
   appendNotes,
 };

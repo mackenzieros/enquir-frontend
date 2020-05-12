@@ -12,15 +12,15 @@ const deleteNote = index => (
   }
 );
 
-// const loadNotes = (notes) => (
-//   {
-//     type: 'LOAD_NOTES',
-//     payload: notes,
-//   }
-// );
+const loadNotes = (notes) => (
+  {
+    type: 'LOAD_NOTES',
+    payload: notes,
+  }
+);
 
 export {
   showModal,
   deleteNote,
-  // loadNotes,
+  loadNotes,
 };
