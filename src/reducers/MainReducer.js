@@ -30,8 +30,8 @@ export default mainReducer = (state=INITIAL_STATE, action) => {
       const index = action.payload;
       // Splice out the note item
       const newNotes = [
-        ...notes.slice(0, index),
-        ...notes.slice(index + 1)
+        ...currState.notes.slice(0, index),
+        ...currState.notes.slice(index + 1)
       ];
       currState.notes = newNotes;
       return currState;

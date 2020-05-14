@@ -90,7 +90,12 @@ class Main extends Component {
     if (this.props.notes !== prevProps.notes) {
       await Storage.addNotes(this.props.notes);
     }
-  }
+  };
+
+  async componentDidMount() {
+    const notes = await Storage.getNotes();
+    this.props.loadNotes(notes);
+  };
 
   render() {
     const { notes, showingModal } = this.props;

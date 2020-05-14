@@ -20,6 +20,12 @@ import {
   changes,
   toggleConfirmation,
   topicChange,
+  notesChange,
+  addQuestions,
+  updateQuestion,
+  deleteQuestion as deleteQuestionRedux,
+  showAddQuestionButton,
+  toggleNotifications as toggleNotificationsRedux,
 } from '../../actions/NotecardActions';
 import { containers, buttons, inputs, text } from './Styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -133,20 +139,17 @@ class NotecardModal extends Component {
 
   // Scrape web page for content on a topic
   autoPop = async () => {
-    const { topicInput, notesInput } = this.state;
+    const { topicInput, notesInput } = this.props;
     if (topicInput.length < 1) {
       Alert.alert('Uh oh!', 'To use the auto notecard maker, a topic must be provided');
       return;
     }
 
     try {
-      this.setState({
-        isLoading: true,    // show loader while request is performing
-        loadingState: 'Gathering notes...',
-      });
+      this.props.toggleLoader('Gathering notes...', true);
 
       const res = await axios.post(WEB_SCRAPER_API_URL, {
-        query: this.state.topicInput,
+        query: this.props.topicInput,
       });
 
       if (res.status !== 200 && res.status !== 201) {
@@ -160,33 +163,27 @@ class NotecardModal extends Component {
       const { data } = res;
 
       // Add a couple newlines if notes already exist
-      this.setState({
-        notesInput: notesInput.length ? notesInput.concat(`\n\n${data.blurb}`) : data.blurb,
-      });
+      const text = notesInput.length ? notesInput.concat(`\n\n${data.blurb}`) : data.blurb
+      this.props.notesChange(text);
     } catch (err) {
       console.log('Err occurred communicating with scraper: ', err);
       Alert.alert('Sorry!', `Couldn\'t find notes for "${topicInput}"`);
     }
-    this.setState({
-      isLoading: false,
-    });
+    this.props.toggleLoader('', false);
   };
 
   // Generate questions given content
   generateQuestions = async () => {
     try {
-      if (this.state.notesInput.length < 1) {
+      if (this.props.notesInput.length < 1) {
         Alert.alert('Whoops!', 'To generate questions, please write some notes.');
         return;
       }
 
-      this.setState({
-        isLoading: true,    // show loader while request is performing
-        loadingState: 'Creating questions...',
-      });
+      this.props.toggleLoader('Creating questions...', true);
 
       const res = await axios.post(QUESTION_GENERATOR_API_URL, {
-        blurb: this.state.notesInput,
+        blurb: this.props.notesInput,
       });
 
       if (res.status !== 201) {
@@ -197,72 +194,52 @@ class NotecardModal extends Component {
       if (questions.length < 1) {
         Alert.alert('Sorry!', 'We were unable to create questions from your notes.');
       } else {
-        var lastId = this.state.questions.length ? this.state.questions[this.state.questions.length - 1].id : -1;
+        var lastId = this.props.questions.length ? this.props.questions[this.props.questions.length - 1].id : -1;
         const newQuestions = questions.map(question => ({
           id: ++lastId,
           question: question,
         }));
-        this.setState({
-          questions: this.state.questions.concat(newQuestions),    // add to existing questions
-        });
+        this.props.addQuestions(newQuestions);
       }
     } catch (err) {
       console.log('Err occurred communicating with question generator: ', err);
-      Alert.alert('Whoops!', 'We\'re having trouble connecting to the our servers.');
+      Alert.alert('Whoops!', 'We\'re having trouble connecting to our servers.');
     }
-    this.setState({
-      isLoading: false,
-    });
+    this.props.toggleLoader('', false);
   };
 
   // Add an empty question
   addQuestion = () => {
-    const { questions } = this.state;
+    const { questions } = this.props;
     const id = questions.length == 0 ? 0 : questions[questions.length - 1].id + 1;
-    this.setState({
-      questions: this.state.questions.concat({
-        id,
-        question: '',
-      }),
+    this.props.addQuestions({
+      id,
+      question: '',
     });
   };
 
   // Overwrite an existing questions content
   saveQuestion = (id, newQuestion) => {
-    const index = search(id, this.state.questions, "id");
+    const index = search(id, this.props.questions, "id");
     if (index == -1) {
       console.log('Error occurred while trying to save question.');
       return;
     }
-
-    const questions = [...this.state.questions];
-    questions[index].question = newQuestion;
-
-    this.setState({
-      questions: questions,
-    });
+    this.props.updateQuestion(index, newQuestion);
   };
 
   // Removes a question
   deleteQuestion = (id) => {
-    const index = search(id, this.state.questions, "id");
+    const index = search(id, this.props.questions, "id");
     if (index == -1) {
       console.log('Error occurred: could not find question to delete');
       return;
     }
-
-    const questions = [
-      ...this.state.questions.slice(0, index),
-      ...this.state.questions.slice(index + 1)
-    ];
+    this.props.deleteQuestionRedux(index);
 
     // Remove the notification associated with the question
-    const notifId = (this.state.noteObj.id.toString()).concat((id).toString());
+    const notifId = (this.props.noteObj.id.toString()).concat((id).toString());
     PushNotification.cancelLocalNotification(notifId);
-
-    this.setState({
-      questions: questions,
-    });
   };
 
   // Schedules or cancels notifications depending on toggle value (called on-save)
@@ -288,23 +265,17 @@ class NotecardModal extends Component {
 
   // Toggles notification setting
   toggleNotifications = () => {
-    const { notifications } = this.state;
-    this.setState({
-      notifications: !notifications,
-    });
+    const { notifications } = this.props;
+    this.props.toggleNotificationsRedux(!notifications);
   };
 
   // Keyboard listener for hiding/showing a button if keyboard is active/inactive
   _keyboardDidShow = () => {
-    this.setState({
-      showingAddQuestionButton: false,
-    });
+    this.props.showAddQuestionButton(false);
   }
 
   _keyboardDidHide = () => {
-    this.setState({
-      showingAddQuestionButton: true,
-    });
+    this.props.showAddQuestionButton(true);
   }
 
   // Checks when the notecard updates, if any changes to topic input, notes input, questions, or notifications settings occurred.
@@ -450,7 +421,7 @@ class NotecardModal extends Component {
                   <TextInput
                     style={inputs.notesInput}
                     multiline={true}
-                    onChangeText={(notesInput) => this.setState({ notesInput })}
+                    onChangeText={(notesInput) => this.props.notesChange(notesInput)}
                     value={notesInput}
                     placeholder={'Enter notes'}
                     textAlignVertical={'top'}
@@ -505,6 +476,12 @@ const mapDispatchToProps = dispatch => (
     changes,
     toggleConfirmation,
     topicChange,
+    notesChange,
+    addQuestions,
+    updateQuestion,
+    deleteQuestionRedux,
+    showAddQuestionButton,
+    toggleNotificationsRedux,
   }, dispatch)
 );
 
