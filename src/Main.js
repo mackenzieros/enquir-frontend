@@ -41,7 +41,7 @@ const Notecard = ({ parent, item }) => {
       <View style={containers.notecard}>
         <View style={containers.topicContainer}>
           <Text style={text.topic}>{item.topic}</Text>
-          <TouchableOpacity onPress={() => { parent.props.deleteNote(item.id) }}>
+          <TouchableOpacity onPress={() => { parent.deleteNote(item.id) }}>
             <Icon name='trash' size={15} />
           </TouchableOpacity>
         </View>
