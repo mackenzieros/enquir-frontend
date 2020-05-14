@@ -27,7 +27,7 @@ export default mainReducer = (state=INITIAL_STATE, action) => {
       currState.showingModal = !currState.showingModal;
       return currState;
     case 'DEL_NOTE':
-      const index = action.payload;
+      const { index } = action.payload;
       // Splice out the note item
       const newNotes = [
         ...currState.notes.slice(0, index),
@@ -36,7 +36,8 @@ export default mainReducer = (state=INITIAL_STATE, action) => {
       currState.notes = newNotes;
       return currState;
     case 'LOAD_NOTES':
-      currState.notes = action.payload;
+      const { notes } = action.payload;
+      currState.notes = notes;
       return currState;
     default:
       return state;

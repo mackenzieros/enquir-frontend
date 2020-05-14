@@ -8,14 +8,18 @@ const showModal = () => (
 const deleteNote = index => (
   {
     type: 'DEL_NOTE',
-    payload: index,
+    payload: {
+      index,
+    }
   }
 );
 
 const loadNotes = (notes) => (
   {
     type: 'LOAD_NOTES',
-    payload: notes,
+    payload: {
+      notes,
+    }
   }
 );
 
